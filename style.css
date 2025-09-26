@@ -1,0 +1,84 @@
+body {
+    background-color:rgb(140, 120, 242);
+    margin: 0px;
+}
+
+#main-title {
+    font-family: monospace;
+    font-size: 80px;
+    color: rgb(140, 120, 242);
+    background-color: rgb(212, 193, 240);
+    text-align: center;
+    padding: 20px;
+    margin: auto;
+    width: 30%;
+    
+}
+
+#main-title:hover {
+    font-family: monospace;
+    color: rgb(140, 120, 242);
+    background-color: rgb(224, 224, 242);
+    text-align: center;
+    margin: 0px;
+    width: auto;
+}
+
+#paragraph-text {
+    font-family: monospace;
+    color: rgb(140, 120, 242);
+    background-color: rgb(212, 193, 240);
+    text-align: center;
+    padding: 10px;
+    margin: auto;
+    width: 20%;
+    
+}
+
+#hyperlink {
+    font-family: monospace;
+    font-size: xx-large;
+    color: rgb(140, 120, 242);
+    background-color: rgb(212, 193, 240);
+    padding: 10px;
+    display: block;
+    text-align: center;
+    margin: auto;
+    width: 20%;
+}
+
+#hyperlink:hover {
+    font-family: monospace;
+    color: rgb(140, 120, 242);
+    background-color: rgb(224, 224, 242);
+    padding: 10px;
+    display: block;
+    text-align: center;
+    margin: 0;
+    width: auto;
+}
+
+#header{
+    font-family: monospace;
+    color: rgb(140, 120, 242);
+    background-color: rgb(212, 193, 240);
+    text-align: center;
+    padding: 10px;
+    margin: auto;
+    width: 20%;
+}
+
+#header:hover{
+    background-color: rgb(224, 224, 242);
+    margin: 0;
+    width: auto;
+}
+
+#divtest{
+
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
