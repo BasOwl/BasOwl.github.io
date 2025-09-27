@@ -6,6 +6,8 @@ body {
     font-family: monospace;
     color: rgb(140, 120, 242);
     background-color: rgb(212, 193, 240);
+    border-radius: 6px;
+    padding: 6px;
     text-align: center;
     width: fit-content;
     margin: auto;
@@ -15,6 +17,7 @@ body {
     display: inline-block;
     flex-direction: row;
     flex-wrap: nowrap;
+    font-size: large;
     margin-top: 2%;
     gap: 2%;
     color: rgb(140, 120, 242);
@@ -37,22 +40,21 @@ body {
        
 }
 
-#project-div{
-
-    display: flex;
-    margin-top: 2%;
-    font-family: monospace;
-    flex-direction: row;
-    flex-wrap: wrap;
-    color: rgb(140, 120, 242);
-    background-color: rgb(212, 193, 240);
-    width: fit-content;
-
+.projects-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1%;
+    margin: 0 auto;
+    
 }
 
-#subproject-div{
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
+.projects-entry{
+    background-color: rgb(212, 193, 240);
+    color: rgb(140, 120, 242);
+    font-family: monospace;
+    padding: 6px;
+    border-radius: 6px;
+    white-space: normal;
+    word-wrap: break-word;
 
 }
