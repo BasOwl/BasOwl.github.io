@@ -1,84 +1,58 @@
 body {
     background-color:rgb(140, 120, 242);
-    margin: 0px;
 }
 
-#main-title {
+#main-title{
     font-family: monospace;
-    font-size: 80px;
     color: rgb(140, 120, 242);
     background-color: rgb(212, 193, 240);
     text-align: center;
-    padding: 20px;
+    width: fit-content;
     margin: auto;
-    width: 30%;
+}
+
+#linkdiv{
+    display: inline-block;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-top: 2%;
+    gap: 2%;
+    color: rgb(140, 120, 242);
+    background-color: rgb(212, 193, 240);
     
 }
 
-#main-title:hover {
+#hyperlink{
     font-family: monospace;
-    color: rgb(140, 120, 242);
-    background-color: rgb(224, 224, 242);
-    text-align: center;
-    margin: 0px;
-    width: auto;
-}
-
-#paragraph-text {
-    font-family: monospace;
-    color: rgb(140, 120, 242);
-    background-color: rgb(212, 193, 240);
-    text-align: center;
-    padding: 10px;
-    margin: auto;
-    width: 20%;
+    color: black;
+    padding: 4px 4px;
     
 }
 
-#hyperlink {
+#hyperlink:hover{
     font-family: monospace;
-    font-size: xx-large;
+    color: rgb(103, 110, 0);
+    background-color: rgb(224, 224, 242);
+    padding: 4px 4px;
+       
+}
+
+#project-div{
+
+    display: flex;
+    margin-top: 2%;
+    font-family: monospace;
+    flex-direction: row;
+    flex-wrap: wrap;
     color: rgb(140, 120, 242);
     background-color: rgb(212, 193, 240);
-    padding: 10px;
-    display: block;
-    text-align: center;
-    margin: auto;
-    width: 20%;
+    width: fit-content;
+
 }
 
-#hyperlink:hover {
-    font-family: monospace;
-    color: rgb(140, 120, 242);
-    background-color: rgb(224, 224, 242);
-    padding: 10px;
-    display: block;
-    text-align: center;
-    margin: 0;
-    width: auto;
-}
-
-#header{
-    font-family: monospace;
-    color: rgb(140, 120, 242);
-    background-color: rgb(212, 193, 240);
-    text-align: center;
-    padding: 10px;
-    margin: auto;
-    width: 20%;
-}
-
-#header:hover{
-    background-color: rgb(224, 224, 242);
-    margin: 0;
-    width: auto;
-}
-
-#divtest{
-
-    display:flex;
+#subproject-div{
+    display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    gap: 20px;
-}
+    width: fit-content;
 
+}
