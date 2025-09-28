@@ -1,0 +1,82 @@
+body {
+    background-image:url("./holehere.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    margin: 0;
+}
+
+#main-title{
+    font-family: monospace;
+    color: rgb(140, 120, 242);
+    background-color: rgb(212, 193, 240);
+    border-radius: 6px;
+    padding: 6px;
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+}
+
+#linkdiv{
+    display: inline-block;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-size: large;
+    margin-top: 2%;
+    gap: 2%;
+    color: rgb(140, 120, 242);
+    background-color: rgb(212, 193, 240);
+    
+}
+
+#hyperlink{
+    font-family: monospace;
+    color: black;
+    padding: 4px 4px;
+    
+}
+
+#hyperlink:hover{
+    font-family: monospace;
+    color: rgb(103, 110, 0);
+    background-color: rgb(224, 224, 242);
+    padding: 4px 4px;
+       
+}
+
+.projects-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1%;
+    margin: 0 auto;
+    
+}
+
+
+.projects-entry{
+    background-color: rgb(212, 193, 240);
+    color: rgb(140, 120, 242);
+    font-family: monospace;
+    padding: 6px;
+    border-radius: 6px;
+    white-space: normal;
+    word-wrap: break-word;
+
+}
+
+.projects-entry:hover{
+    background-color: rgb(233, 219, 255);
+    
+}
+
+#testtext{
+    font-family: monospace;
+    color: rgb(140, 120, 242);
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
+    border-radius: 6px;
+    padding: 6px;
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+}
+

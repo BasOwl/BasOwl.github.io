@@ -64,3 +64,19 @@ body {
     background-color: rgb(233, 219, 255);
     
 }
+
+#testtext{
+    color: rgb(140, 120, 242);
+    background-color: rgb(212, 193, 240);
+    
+    font-family: monospace;
+    width: fit-content;
+}
+
+.backgroundimagetest{
+    background-image: url("./holehere.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+}
