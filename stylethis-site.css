@@ -1,7 +1,9 @@
 body {
     background-image:url("./holehere.jpeg");
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     background-size: cover;
+    background-position: center;
+    min-height: 100vh;
     height: 100%;
     margin: 0;
 }
