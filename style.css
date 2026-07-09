@@ -80,3 +80,14 @@ body {
     background-position: center;
     margin: 0;
 }
+
+#blogtestsite{
+   font-family: monospace;
+   color: rgb(140, 120, 242);
+   background-color: rgb(212, 193, 240);
+   border-radius: 6px;
+   padding: 6px;
+   text-align: left;
+   width: fit-content;
+   margin: auto;
+}

@@ -9,29 +9,1615 @@
 
 <body>
     <h1 id="main-title">BlogOwl 0\/0</h1>
+    <h1 id="main-title">This is here so I have a place to remember this work</h1>
 
     <div id="linkdiv">
         <a id="hyperlink", href="./projects.html">PROJECTS</a>
         <a id="hyperlink", href="https://github.com/BasOwl">github</a>
     </div>
 
-    <div>
-
-        <head>
-    ...
-    <!-- Import element definition and auto-register -->
-    <script type="module" src="https://cdn.jsdelivr.net/npm/zero-md@3?register"></script>
-    </head>
-    <body>
-    ...
-    <!-- Profit! -->
-    <zero-md src="https://github.com/BasOwl/blog/blob/main/basowlBlog.md"></zero-md>
-</body>
+    <div id ="blogtestsite-">
 
 
-    </div>
+<h1>[2026-18-02] Recursive Descent Parser</h1>
+<p>A recursive descent parser is a "top-down parser that procesess input based on a set of recursive functions, where each function corresponds to a grammar rule"</p>
+<p>This is done on the input from left to right and constructs a "parse tree" by matching the production rules.</p>
+<h1>[2025-25-11] Day 53pt2: Network Troubleshooting Toolkit</h1>
+<h2>Task 1</h2>
+<p>I created a net_lab folder in my home directory and then created a report.txt file to keep notes</p>
+<p>The first thing I did to get reachability, HTTP status code and headers was to use curl with -i:</p>
+<pre><code>curl -i URL &gt; curl_test.txt</code></pre>
+<p>To list the folder we use ls -l or ls -ltr</p>
+<p>The command to lookup the hostname of a website is host WEBSITE NAME. I did this and outputted it into a file called host_test.txt</p>
+<h2>Task 2</h2>
+<p>The second task required me to save a socket snapshot using ss and its various arguments to get specific protocols</p>
+<p>I was required to find both TCP and UDP and did this by using ss -u and ss -t respectively</p>
+<p>I then append this to a file with >></p>
+<h2>Task 3</h2>
+<p>For this I was required to check external availability similarily to task 1 however I was also tasked with acquring headers, status and timing metrics seperately</p>
+<p>The first thing required was the header of a page using curl, we can get this and add it to a file by using curl with --head and using > or >> to append it to a file</p>
+<p>The second was to get the status code of a page by using curl --head but then we have to use awk if we want to get just the status code:</p>
+<pre><code>curl --head https://google.com | awk '/^HTTP/ { print $2 }' &gt;&gt; curl_status.txt</code></pre>
+<p>HTTP means it will get any line that begins with HTTP caret^ being the character that defines this, this seperates by whitespace so $2 would be the 2nd field, being the status code</p>
+<p>For timing metrics we have to use -w after the link like so:</p>
+<pre><code>curl https://google.com -w </code></pre>
+<p>But we need to give -w something to output and we do this like so:</p>
+<pre><code>curl -o /dev/null https://google.com -w "namelookup: %{time_namelookup}\nconnect: %{time_connect}\nappconnect: %{time_appconnect}\npretransfer: %{time_pretransfer}\nstarttransfer: %{time_starttransfer}\ntotal: %{time_total}\n"</code></pre>
+<p>We include -o /dev/null to output the garbage data we dont need into the void. We have usable data but to clean it up and remove the progress bar we most make curl run silently:</p>
+<pre><code>curl -s -o /dev/null https://google.com -w "namelookup: %{time_namelookup}\nconnect: %{time_connect}\nappconnect: %{time_appconnect}\npretransfer: %{time_pretransfer}\nstarttransfer: %{time_starttransfer}\ntotal: %{time_total}\n"</code></pre>
+<p>We then append this to a file of out choosing, in our case we do >> curl_timing.txt</p>
+<h2>Task 4</h2>
+<p>We are tasked with confirming our SSH client and capturing the config preview, we get the version by using ssh -V >> ssh_version.txt</p>
+<p>To get the config and test localhost without connecting we use ssh -G localhost >> ssh_config.txt</p>
+<h1>[2025-25-11] Day 53: Curl and Ping commands</h1>
+<ul><li>curl is Linux's way to interact with urls, it will bring back the content of a url. curl -O URL will download the contents of a url</li></ul>
+<ul><li>ping works with the ipaddress and doesn't require the site to be online</li></ul>
+<h1>[2025-11-10] Day 52pt2: The SS Command</h1>
+<p>The SS command is a tool used to "dump socket statistics and display information" similar and faster but similar to netstat. It can display more TCP and state information</p>
+<h2>TCP UDP AND UNIX</h2>
+<p>TCP (Transmission Control Protocol) is a set of rules that ensures data is sent successfully between two computers over the net</p>
+<p>UDP (User Datagram Protocol) is a way for sending data over the internet without checking if it arrives correctly</p>
+<p>UNIX is a way for programs on the same computer to talk to each other, it uses a special file for messages and is used in databases, web servers and local services without internet</p>
+<h2>SS Command history</h2>
+<p>In 2010 the SS command was introduced in the iproute2 package to replace netstat<br>In 2016 SS gained more importance in network management and gained expanded support for additional socket types and protocols<br>In 2024 SS remains a key tool for Linux network management</p>
+<p>SS can be used with -t to show only TCP connections, with -u to see only UDP connections and -x to get only UNIX</p>
+<h1>[2025-11-10] Day 52: SSH Keys</h1>
+<p>There are two main reasons we would want to use password-less entry through SSH:</p>
+<ul><li>Repetitive logins</li></ul>
+<ul><li>Automation through scripts</li></ul>
+<p>SSH Keys are generated at the user level:</p>
+<ul><li>USER</li></ul>
+<ul><li>ROOT</li></ul>
+<p>These are then copied from the client to the server</p>
+<p>For us to create ssh keys and copy them to the server we have to:</p>
+<ul><li>Generate the key with "ssh-keygen"</li></ul>
+<ul><li>Copy the key to the server with "ssh-copy-id root@SERVERIP"</li></ul>
+<ul><li>Login to the server with "ssh root@SERVERIP"</li></ul>
+<h1>[2025-11-06] Day 51: SSH and Telnet</h1>
+<ul><li>Telnet is a un-secured connection between computer</li></ul>
+<ul><li>SSH is a secured connection between two machines</li></ul>
+<p>There are two packages for these services:</p>
+<ul><li>Client package</li></ul>
+<ul><li>Server package</li></ul>
+<h2>Configuring and Securing SSH</h2>
+<p>SSH stands for Secure Shell. A shell provides you with an interface to the Linux system and translates your commands to the kernel which then interacts with the hardware</p>
+<p>Open SSH is a package/software</p>
+<p>Its service daemon is sshd, it defaults to port 22</p>
+<p>SSH itself is secure as it's encrypted but there are additional configurations that can be done to increase the security:</p>
+<p>The first being IDLE TIMEOUT INTERVAL:</p>
+<p>This is to avoid having an unattended SSH session and we can set this up by doing the following:</p>
+<ul><li>Login as root, edit /etc/ssh/sshd_config and add "ClientAliveInterval TIMEINSECONDS" and "ClientAliveCountMax 0", Then restart the ssh demon with "systemctl restart sshd"</li></ul>
+<p>The second being disabling root login through SSH:</p>
+<ul><li>Login as root, edit /etc/ssh/sshd_config to replace PermitRootLogin yes to no, restart the daemon with systemctl restart sshd</li></ul>
+<p>The third being the removal of the ability to login to accounts with empty passwords:</p>
+<ul><li>Login as root, edit /etc/ssh/sshd_config and remove the # to uncomment the line with "PermitEmptyPasswords no", restart the daemon</li></ul>
+<p>The fourth being to limit the users that can be accessed by SSH:</p>
+<ul><li>Login as root, edit /etc/ssh/sshd_config and add "AllowUsers USERNAME1 USERNAME2", restart the daemon</li></ul>
+<p>The fifth being to use SSH on a different port:</p>
+<ul><li>Login as root, edit /etc/ssh/sshd_config and uncomment the line with "Port 22" and we can change that to select a different port, then we have to restart the service</li></ul>
+<h1>[2025-10-29] Day 50: New Network Utilities (mntui, nmcli, nm-connection-editor, GNOME)</h1>
+<p>NetworkManager is a "service that provides a set of tools designed specifically to make it easier to manage the networking configuration on Linux systems." It is the default on RHEL 8 and 9</p>
+<ul><li>Different tools: GUI, nmtui, nmcli</li></ul>
+<h2>Network Config Methods</h2>
+<ul><li>nmcli - "network manager command line interface" This is useful when access to a gui is not available and can be used in scripts to make network config changes</li></ul>
+<ul><li>nmtui - "network manager text user interface" This can be run without a terminal window and allows changes to be made by making menu selections and entering data</li></ul>
+<ul><li>nm-connection-editor This is a full graphical management tool providing access to most of the NetworkManager configuration options</li></ul>
+<ul><li>GNOME Settings This is the network screen of the GNOME desktop enviroment's settings application and allows basic network management tasks to be performed</li></ul>
+<p>Using nmtui we can create a newer bond by using a new method called Team. We give a profile name, add slave adapters through either wifi or ethernet and we can give each device a static ip. We can also assign a static ip to the overall team</p>
+<p>Using nmcli we can do multiple things such as assigning a static ip:</p>
+<pre><code>nmcli connection modify enp0s3(NETWORK ADAPTER NAME) ipv4.addresses IPADDRESS/24 (24 is the subnet mask)
+nmcli connection modify enp0s3(NETWORK ADAPTER NAME) ipv4.gateway GATEWAYIP
+nmcli connection modify enp0s3(NETWORK ADAPTER NAME) ipv4.method manual
+nmcli connection modify enp0s3(NETWORK ADAPTER NAME) ipv4.dns 8.8.8.8
+nmcli connection down enp0s3 down
+nmcli connection down enp0s3 up</code></pre>
+<p>We can also use nmkcli to assign a secondary static ip:</p>
+<pre><code>nmcli connection modify enp0s3 +ipv4.addresses IPADDRESS/24</code></pre>
+<h1>[2025-10-21] Day 49pt2: NIC Bonding</h1>
+<p>NIC is the network interface card, usually an ethernet port</p>
+<p>NIC bonding is the combination of multiple NICs into one</p>
+<p>The purpose of bonding is to increase availability and add redundancy</p>
+<p>The command we use for this is:</p>
+<pre><code>modprobe bonding 
+
+modinfo bonding</code></pre>
+<p>Create /etc/sysconfig/network-scripts/ifcfg-bond0</p>
+<p>Edit /etc/sysconfig/network-scripts/ethernet1<br>Edit /etc/sysconfig/network-scripts/ethernet2</p>
+<p>We point eth1 and eth2 at bond0 and then Restart network with "systemctl restart network"</p>
+<p>In our bond0 file we decide on a mode in "BONDING_OPTS" and those modes are:</p>
+<pre><code>| Mode | Policy                        | How it works                                                                                                                                                                                                                              | Fault Tolerance | Load Balancing |
+|:----:|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------:|
+| 0    | Round Robin                   | Packets are sequentially transmitted/received through each interface one by one.                                                                                                                                                          | No              | Yes            |
+| 1    | Active Backup                 | One NIC active while another NIC is asleep. If the active NIC goes down, another NIC becomes active. Only supported in x86 environments.                                                                                                  | Yes             | No             |
+| 2    | XOR (Exclusive OR)            | The MAC address of the slave NIC is matched against the incoming request’s MAC. Once the connection is established, the same NIC is used to transmit/receive for the destination MAC.                                                     | Yes             | Yes            |
+| 3    | Broadcast**                   | All transmissions are sent on all slaves.                                                                                                                                                                                                 | Yes             | No             |
+| 4    | Dynamic Link Aggregation      | Aggregated NICs act as one NIC, resulting in higher throughput and providing failover if a NIC fails. Requires a switch that supports IEEE 802.3ad.                                                                                       | Yes             | Yes            |
+| 5    | Transmit Load Balancing (TLB) | Outgoing traffic is distributed depending on the current load of each slave interface. Incoming traffic is received by the current slave. If the receiving slave fails, another slave takes over the MAC address of the failed slave.     | Yes             | Yes            |
+| 6    | Adaptive Load Balancing (ALB) | Unlike Dynamic Link Aggregation, Adaptive Load Balancing doesn’t require switch configuration. Only supported in x86 environments. Receiving packets are load balanced through ARP negotiation.                                           | Yes             | Yes            |
+
+miimon:
+Specifies the MII link monitoring frequency in milliseconds.  
+This determines how often the link state of each slave is inspected for link failures.
+</code></pre>
+<h1>[2025-10-21] Day 49: Network Interface Card Information</h1>
+<p>To find out information about the NIC we can use the command:</p>
+<pre><code>ethtool NICNAME</code></pre>
+<p>We can find the name of the mahcine's NICs by typing "ip a"</p>
+<p>We will see another NIC which is "lo" This is a "loopback" device and is a special interface that the machine uses to talk to itself. Mainly for diagnostics and connecting to local servers.</p>
+<p>Virtual machines with a network bridge may also have "virb0"</p>
+<h1>[2025-10-19] Day 48pt2: Network Files and Commands(ping, ifup, ifdown, netstat, tcpdump)</h1>
+<ul><li>Interface Detection</li></ul>
+<ul><li>Assigning an IP Address</li></ul>
+<h2>Interface configuration files:</h2>
+<ul><li>/etc/nsswitch.conf, /etc/hosts, /etc/sysconfig/network, /etc/sysconfig/network-scripts/ifcfg-nic, /etc/resolv.conf,</li></ul>
+<ul><li>/etc/hosts: We can add IPs here with hostnames in order to do things like: ping hostname and it will take the ip from hosts and run the command</li></ul>
+<ul><li>/etc/sysconfig/network: This file specifies additional information that is valid to all network interfaces on the system.</li></ul>
+<ul><li>/etc/sysconfig/network-scripts: ifcfg-DEVICENAME has the network device config. We can change the BOOTPROTO to static to assign an ip to certain devices</li></ul>
+<ul><li>/etc/resolve.conf: Specifies the DNS server</li></ul>
+<h2>Network Commands</h2>
+<ul><li>ping</li><li>ipconfig OR ip a</li><li>ifup ifdown</li><li>netstat: a tool for managing and monitoring the status of your system's interfaces, routes, and connections</li><li>tcpdump: is a data-network packet analyzer program. It allows the user to display TCP/IP and other packets being transmitted or received over a network to which the computer is attached.</li></ul>
+<h1>[2025-10-19] Day 48: Network Components:</h1>
+<ul><li>IP means "Internet Protocol" and is a unique string of numbers seperated by periods that identifies each computer: "192.168.1.1"</li></ul>
+<ul><li>Subnet Mask is "a 32-bit number that masks an IP Address and divides the IP into network and host addresses. The Subnet Mask is made by setting network bits to all "1"s and host bits to all "0"s</li></ul>
+<ul><li>Gateway tells the computer which route to pick to send traffic out and recieve traffic</li></ul>
+<ul><li>Static vs DHCP Static is an ip that is permanentely assign to a network device. DHCP is "Dynamic Host Configuration Protocol" and automatically manages IP address allocation on a network</li></ul>
+<ul><li>Interface: This is usually a Cat 5 ethernet port</li></ul>
+<ul><li>Interface MAC: The interface has a permanant MAC address. Example MAC Address: 3A-34-52-C4-69-B8 Organizationally Unique Identifier: 3A-34-52 Network Interface Controller: 69-B8</li></ul>
+<h1>[2025-10-14] Day 47: Client & Server Relationship</h1>
+<p>The Client:</p>
+<p>"The client is a computer or a program that relies on sending a request to another program or computer that accesses a service made available by a server"</p>
+<ul><li>Web Browsers</li></ul>
+<ul><li>Mobile apps</li></ul>
+<ul><li>Other software/ apps</li></ul>
+<p>The Server:</p>
+<p>"A Server is a piece of hardware or software that provides functionality for other programs or devices"</p>
+<ul><li>Physical machine</li></ul>
+<ul><li>Services: Web hosting, database management, file sharing</li></ul>
+<p>There are a few ways for Servers and Clients to communicate but two notables ones are: HTTP or TCP/IP</p>
+<h1>[2025-10-14] Day 46: Shell command history</h1>
+<p>history in the cli prints our entire command input history</p>
+<p>We can make it more digestable by piping history into more:</p>
+<pre><code>history | more</code></pre>
+<p>We can find a line number of a command we wish to reuse and instead of copying and pasting the command we can do:</p>
+<pre><code>!LINENUMBER</code></pre>
+<p>If we want to search for a certain command we can pipe history into grep:</p>
+<pre><code>history | grep "command"</code></pre>
+<h1>[2025-10-12] Day 45pt 2: Aliases</h1>
+<p>Aliases are the more common way of doing what I did with the wwh script in shell-scripting-intro</p>
+<p>An example of setting l to do ls -ltr would be:</p>
+<pre><code>alias l="ls -ltr"</code></pre>
+<p>So when we type l, we will instead get the ls -ltr command</p>
+<p>If I were to redo the wwh command as an alias it would look like:</p>
+<pre><code>alias wwh="whoami; hostname; pwd"</code></pre>
+<p>A useful one to assign executable permissions to the shell scripts we have been doing would be:</p>
+<pre><code>alias perms="chmod a+x"</code></pre>
+<p>To remove an alias we do:</p>
+<pre><code>unalias NAME</code></pre>
+<h2>User or Global Aliases</h2>
+<p>Aliases that we created above will not remain between users, this is because there are 2 types of aliases.</p>
+<p>There are User and Global Aliases.</p>
+<p>Global aliases can be used by anyone on a system.</p>
+<p>User Aliases are at: home/user/.bashrc<br>If we edit this file and add an alias here, it will persist through sessions.</p>
+<p>Global Aliases are at: etc/bashrc</p>
+<h1>[2025-10-12] Day 45: Checking Remote Server Connectivity</h1>
+<ul><li>script to check status of a remote host</li></ul>
+<pre><code>ping -c1 192.168.12.1
+        if [ $? -eq 0 ]
+
+        then
+        echo OK
+        else
+        echo NOT OK
+
+        fi</code></pre>
+<p>No Output:</p>
+<pre><code>ping -c1 192.168.12.1 &amp;&gt; /dev/null</code></pre>
+<p>With variables:</p>
+<pre><code>hosts = 192.168.12.1
+
+ping -c1 $hosts &amp;&gt; /dev/null
+        if [ $? -eq 0 ]
+
+        then
+        echo $hosts is OK
+        else
+        echo $hosts is NOT OK
+
+        fi</code></pre>
+<h1>[2025-09-07] Day 45: Scripting: CASE STATEMENTS</h1>
+<p>Case statements are similar to switch statements in other languages</p>
+<p>An example of case statemnts would be:</p>
+<pre><code>case WORD in 
+  PATTERN1)
+    echo "This is pattern 1"
+    ;; #signals the end of the block
+
+  PATTERN2)
+    echo "This is pattern 2"
+    ;;
+
+  *)
+    echo "This is everything else
+    ;;
+
+  esac</code></pre>
+<p>")" after the pattern is a seperator of the pattern and the code in the block</p>
+<h1>[2025-09-01] Day 44: Scripting: I/O, if-then, for loops, do-while, cast statements</h1>
+<p>To create a script that would take input from the user we can use:</p>
+<ul><li>read</li></ul>
+<p>Read takers user input and assigns it to the variable that we determine with the read command<br>So when we use read we always have to give a variable that the input is going to be assigned to:</p>
+<pre><code>read VARIABLENAME</code></pre>
+<p>For us to use a variable that runs a command we have to define it in a script like so:</p>
+<pre><code>a= `COMMAND`</code></pre>
+<h2>if-then scripts</h2>
+<p>If do this</p>
+<p>else do this</p>
+<p>An example of a shell script using an if statement:</p>
+<pre><code>#!/bin/bash
+a=100
+if[$a -eq 100]
+then
+  echo a is 100
+else
+  echo a is not 100
+fi
+</code></pre>
+<p>We then have to make it executable with chmod a+x</p>
+<h2>for loop scripts</h2>
+<p>For loops are loops that will keep running until a variable is met</p>
+<p>An example script of a for loop is:</p>
+<pre><code>#!/bin/bash
+
+for i in 1 2 3 4 5
+do
+  echo "Test $i times"
+done</code></pre>
+<p>done is how we close the loop</p>
+<p>As with all shell scripts we have to set the script to be executable with chmod a+x</p>
+<h2>do-while scripts</h2>
+<p>The while statement continually executes a block while a determined condition is met</p>
+<pre><code>#!/bin/bash
+
+count=0
+num=10
+while [ $count -lt 10]
+do
+  echo "$num"
+  ((count++))</code></pre>
+<h1>[2025-08-31] Day 43: Linux Kernel, Shell, Shell scripting</h1>
+<p>The linux kernel is the interface between hardware and software</p>
+<p>A shell is like a container, an interface between users and the kernel. The CLI is a shell.</p>
+<p>We can find our shell in three ways:</p>
+<pre><code>echo $0
+cat /etc/shells
+/etc/passwd</code></pre>
+<p>The types of shells are:</p>
+<ul><li>Gnome has a gui</li></ul>
+<ul><li>KDE has a gui</li></ul>
+<ul><li>sh is a CLI</li></ul>
+<ul><li>bash is a CLI, a modernised version of sh</li></ul>
+<ul><li>csh and tcsh are C based shells</li></ul>
+<ul><li>ksh</li></ul>
+<h2>Shell Scripting</h2>
+<p>Returning to shell scripting we have:<br>What is a shell script?</p>
+<p>A shell script is an executable file containing shell commands that are executed sequentially. Common things it will contain is:</p>
+<ul><li>Shell (#!/bin/bash)</li></ul>
+<ul><li>Comments (# comment)</li></ul>
+<ul><li>Commands (echo, cp, grep)</li></ul>
+<ul><li>Statements (if, while, for)</li></ul>
+<p>The file needs to be given execute permissions in order to be touched</p>
+<p>The file has to be called from an absolute path, can be called in current with ./script.bash</p>
+<h2>Ideas for shell scripts</h2>
+<ul><li>Output to the terminal with echo</li></ul>
+<ul><li>Creating tasks</li></ul>
+<ul><li>Telling your id</li></ul>
+<ul><li>Location</li></ul>
+<ul><li>Creating files/dirs</li></ul>
+<ul><li>System info</li></ul>
+<ul><li>Output to a file with ">"</li></ul>
+<ul><li>Filter/ Process text through things like cut, awk, grep, sort, uniq, wc</li></ul>
+<h2>Shell script variables</h2>
+<p>We can use and assign variables in our scripts by assing as normal:</p>
+<p>a = something</p>
+<p>We can then access this elsewhere like this:</p>
+<p>echo "our variable of a is $a"</p>
+<h1>[2025-08-23] Day 42pt2: tmux (Terminal Multiplex Command)</h1>
+<p>tmux is a modern and dynamic alternative to screen</p>
+<p>Like screen, it is a terminal multiplexer for linux. It allows multiple terminal sessions to be accessed simultaneously in a single window. Mostly used for running more that one command line at a time</p>
+<p>tmux is currently the most popular multiplexer and is the case for centOS and red hat</p>
+<p>A major use for this is it's session persistance and the ability to disengage from it and reengage with processes still running</p>
+<p>We have to install tmux with:</p>
+<pre><code>dnf install tmux -y</code></pre>
+<p>The bar at the bottom of the session tells us a few things</p>
+<ul><li>[n] Tells us the current session number</li></ul>
+<ul><li>n:bash Tells us the window number</li></ul>
+<ul><li>* Tells us that this is the active window</li></ul>
+<p>To split the window vertically in tmux we do</p>
+<pre><code>CTRL + B
+SHIFT + %</code></pre>
+<p>To split the window horizontally we do</p>
+<pre><code>CTRL + B
+SHIFT + "</code></pre>
+<p>To move between terminals we do CTRL + B and then an arrowkey</p>
+<p>To detach from a session we do</p>
+<pre><code>CTRL + B + D</code></pre>
+<p>To see all of our tmux sessions we do</p>
+<pre><code>tmux ls</code></pre>
+<p>To continue from where we were we do</p>
+<pre><code>tmux a</code></pre>
+<p>To create a new session with a name we do</p>
+<pre><code>tmux new -s NAME</code></pre>
+<p>To open a new window we do</p>
+<pre><code>CTRL + B + C</code></pre>
+<p>To switch between the newly created windows we do</p>
+<pre><code>CTRL + B + N</code></pre>
+<p>CTRL + D to close sessions</p>
+<p>To rename a window we press CTRL + B + ,</p>
+<p>To terminate sessions we type tmux kill-session -t SESSIONNAME</p>
+<h1>[2025-08-23] Day 42: Screen command</h1>
+<ul><li>GNU Screen</li></ul>
+<p>Can be used to manage multiple terminal sessions</p>
+<p>To use screen we have to install it with:</p>
+<pre><code>dnf install epel-release
+dnf install screen</code></pre>
+<p>Using screen will open a new terminal with a unique number</p>
+<pre><code>CTRL + a
+shift + | </code></pre>
+<p>Will split the screen vertically</p>
+<pre><code>CTRL + a
+shift + s</code></pre>
+<p>Will split horizontally</p>
+<pre><code>CTRL + a 
+tab</code></pre>
+<p>Will move between active windows</p>
+<pre><code>CTRL + a
+c</code></pre>
+<p>This will activate the window we are in if it is not yet active</p>
+<h1>[2025-08-22] Day 41pt4: Enviroment Variables</h1>
+<p>Enviroment variables are dynamic-named values that can affect the way running processes behave on a computer. They are a part of the enviroment in which a process runs</p>
+<p>Another way to see them is: a set of defined rules and values that determine how to build an enviroment</p>
+<p>We can see the enviroment variables on our machine by typing env<br>This will show us things such as:</p>
+<pre><code>root@localhost:~# env
+SHELL=/bin/bash
+HOME=/root</code></pre>
+<p>Our home here is /root because we are logged into root</p>
+<p>We can check env variables by using printenv EXAMPLE</p>
+<p>We can also use $USER to access variables, we can do things such as:</p>
+<pre><code>echo $USER</code></pre>
+<p>To print what the value is</p>
+<h2>Creating env variables</h2>
+<p>To create an enviroment variable we use the export command:</p>
+<pre><code>export VAR=test
+printenv VAR</code></pre>
+<p>And this will output test, showing that we have created a new TEMPORARY variable in env<br>We can also use export to edit enviroment variables for the session</p>
+<p>To PERMANANTELY change an enviroment variable or create a persistant one we must first Vim .bashrc and then add:</p>
+<pre><code>export VARIABLENAME="VARIABLE"
+:wq</code></pre>
+<p>We then have to source .bashrc and this will update the enviroment variables but only for this user.</p>
+<h2>Global env variables</h2>
+<p>cd etc and then vim enviroment and we then add another export VARIABLE="VARIABLEDATA"<br>we then source enviroment and we can check with echo $VARIABLE</p>
+<p>to remove a variable we use the unset command</p>
+<h1>[2025-08-22] Day 41pt3: Root password recovery</h1>
+<ul><li>Restart the computer</li></ul>
+<ul><li>Edit grub</li></ul>
+<p>On certain versions of linux we have to edit grub from read only to read write or rw</p>
+<pre><code>rw init=/sysroot/bin/sh
+CTRL-x
+chroot /sysroot
+passwd root
+touch /.autorelabel
+exit
+reboot</code></pre>
+<p>On CentOS / Red Hat 9 we add, at the end of linux ($root), rd.break</p>
+<h1>[2025-08-22] Day 41pt2: Terminal Commands (clear, exit, script)</h1>
+<ul><li>clear</li></ul>
+<p>clears the screen</p>
+<ul><li>exit</li></ul>
+<p>exits out of the shell, terminal or user session</p>
+<ul><li>script</li></ul>
+<p>The script commands stores terminal activities in a log file that can be named by a suer, when a name is not provided, the default name is typescript</p>
+<h1>[2025-08-22] Day 41: Terminal Control Keys</h1>
+<p>The 4 most commonly used control keys on Linux are:</p>
+<ul><li>CTRL-u - erases everything typed in the cli</li></ul>
+<ul><li>CTRL-c - stops/kills a running command</li></ul>
+<ul><li>CTRL-z - suspends a running command</li></ul>
+<ul><li>CTRL-d - exit from an interactive program (signals end of data)</li></ul>
+<h1>[2025-08-18] Day 40 pt5: SOS report</h1>
+<p>An SOS report collects and packages diagnostic and support data. The command to do it is sosreport</p>
+<p>This is done in order to send a report to redhat and we need to contact them to get a case number</p>
+<p>The file it creates can contain sensitive information so we must check before sending if this is the case or not</p>
+<h1>[2025-08-18] Day 40 pt4: Finding system architecture (arch)</h1>
+<p>There are differences between 32-bit and 64-bit CPUS</p>
+<p>64 bit programs cannot run on 32 bit so we may run into issues between the two</p>
+<p>To find out processor information on linux we use the arch command</p>
+<p>We can also use uname -a</p>
+<h1>[2025-08-18] Day 40 pt3: Finding System Information (uname, dmidecode)</h1>
+<pre><code>cat /etc/redhat-release
+
+uname -a
+
+dmidecode</code></pre>
+<p>This tells us what is underneath the operating system.</p>
+<p>uname -a is more verbose and tells us hostname, kernel version etc</p>
+<p>dmidecode | more will let us read it page by page</p>
+<p>hostname and uname -a are the most useful and commonly used of the commands.</p>
+<h1>[2025-08-18] Day 40 pt2: Changing System Hostname (hostnamectl)</h1>
+<p>The code used is:</p>
+<pre><code>hostnamectl - set-hostname newhostname</code></pre>
+<p>We can also just edit /etc/hostname in Vi to change it too</p>
+<p>In Linux V7 it is editing /etc/hostname</p>
+<p>V6 edits /etc/sysconfig/network</p>
+<h1>[2025-08-18] Day 40: System Maintenace (shutdown, init, reboot, halt)</h1>
+<ul><li>shutdown</li></ul>
+<p>Gentle shutdown that waits for things to finish closing</p>
+<ul><li>init 0-6</li></ul>
+<p>Has different levels, 0 shutsdown, 6 reboots, 3 is multi-user mode</p>
+<ul><li>reboot</li></ul>
+<p>Restarts</p>
+<ul><li>halt</li></ul>
+<p>Immediate shutdown</p>
+<h1>[2025-08-17] Day 39: Python packaging, venvs and required package sharing</h1>
+<p>So to break up the RHCSA, I wanted to have a look into if and how you can share python programs and good practices in creating and managing python stuff.</p>
+<p>The first thing I've learned is: It's a good idea to create a venv in the working directory for each project and have them seperate.<br>This allows us to use different versions of things such as Click, where we may need a certain version for once project and a different version for another.<br>Having a seperate venv for each of our python projects allows us to keep things clean and avoid conflicts between requirements.</p>
+<p>On the topic of requirements, I've looked into ways that python has built-in that allow us to share the things we write and have the people we are sharing it with, have the required packages.<br>This is done by us activating the venv for the project we wish to share using:</p>
+<pre><code>source .venv/bin/activate</code></pre>
+<p>We can deactivate by simply using:</p>
+<pre><code>deactivate</code></pre>
+<p>Once we are sure that the venv is active we can use freeze and direct the output to a txt file:</p>
+<pre><code>pip freeze &gt; requirements.txt</code></pre>
+<p>This will create us a list of dependencies for our venv.</p>
+<p>A problem people have been having can be solved by using the following:</p>
+<pre><code>pip list --formate=freeze &gt; requirements.txt</code></pre>
+<p>This does the same as above but in a different way</p>
+<p>We can then share this requirements.txt with the person we are sharing our project with and they can install it using:</p>
+<pre><code>pip install -r requirements.txt</code></pre>
+<h1>[2025-08-15] Day 38: System Logs Monitoring (/var/log)</h1>
+<ul><li>Log Directory = /var/log</li></ul>
+<ul><li>boot</li></ul>
+<ul><li>chronyd = NTP</li></ul>
+<ul><li>cron</li></ul>
+<ul><li>maillog</li></ul>
+<ul><li>secure</li></ul>
+<ul><li>messages</li></ul>
+<ul><li>httpd</li></ul>
+<h1>[2025-08-12] Day 37: System Monitoring (top, df, dmesg, iostat, netstat)</h1>
+<ul><li>top</li></ul>
+<p>Shows a dynamic, real-time view of running processes and kernal-managed tasks</p>
+<ul><li>df</li></ul>
+<p>Stands for "disk free", is a utility that provides information on disk space utilization</p>
+<ul><li>dmesg</li></ul>
+<p>Stands for "diagnostic messages" which prints the message buffer of the kernel</p>
+<ul><li>iostat</li></ul>
+<p>Stands for "input/output statistics" Used for monitoring system input/output statistic for devices and partitions</p>
+<ul><li>netstat - ip & ss</li></ul>
+<p>Stands for "network statistics" Used to check how the machine connects to the internet, and about the connections the machine is making.</p>
+<ul><li>free</li></ul>
+<p>Displays the total amount of free space available along with the amount of memory used, swap memory and buffers used by the kernel</p>
+<ul><li>cat /proc/cpuinfo</li></ul>
+<p>Contains the CPU information of every core and shows the processor type. Displays Vendor_id, CPU, family, model name, microcode, cache size.</p>
+<ul><li>cat /proc/meminfo</li></ul>
+<p>Contains data on memory usage, provides current memory details</p>
+<ul><li>htop</li></ul>
+<p>Used to interactively monitor system-vital resources or processes in real-time.</p>
+<ul><li>glances</li></ul>
+<p>Is used for system monitoring in web server mode or through the web browser. It is an alternative to top and htop.<br>Is run in three modes:</p>
+<ul><li>Standalone Mode: Single system, results in terminal</li></ul>
+<ul><li>Client/ Server Mode: Multiple systems</li></ul>
+<ul><li>Web-server Mode: Single system but remote</li></ul>
+<h1>[2025-08-11] Day 36 pt2: Process Management (bg, fg, nice)</h1>
+<ul><li>Background = CTRL + z, jobs and bg</li><li>Foreground = fg</li><li>Run process even after exit = nohup process & OR nohup process > /dev/null 2>&1 &</li><li>Kill a process by name = pkill</li><li>Process priority = nice (e.g. nice -n 5 process) -20 to 19, lower is more priority.</li><li>Process monitoring = top</li><li>List process = ps</li></ul>
+<h1>[2025-08-11] Day 36: Additional cronjobs (hourly, daily, weekly, monthly)</h1>
+<p>By default there are 4 different types of cronjobs:</p>
+<ul><li>Hourly</li><li>Daily</li><li>Weekly</li><li>Monthly</li></ul>
+<p>All of the above are setup in:</p>
+<ul><li>/etc/cron.hourly/daily/weekly/monthly</li></ul>
+<p>The timing for each are set in:</p>
+<ul><li>/etc/anacrontab  EXCEPT HOURLY</li><li>/etc/cron.d/0hourly.</li></ul>
+<h1>[2025-08-09] Day 35: crontab, at</h1>
+<h2>crontab</h2>
+<p>Is used to schedule tasks:</p>
+<p>crontab -e - edit the crontab<br>crontab -l - lists the entries<br>crontab -r - remove the crontab<br>crond - crontab daemon/ service that manages scheduling</p>
+<p>systemctl status crond - manage the crond service</p>
+<pre><code>command to execute
+│ │ │ │ │
+│ │ │ │ └───── day of the week (0 - 6) (Sunday to Saturday; 7 is also Sunday on some systems)
+│ │ │ └────────── month (1 - 12)
+│ │ └─────────────── day of the month (1 - 31)
+│ └──────────────────── hour (0 - 23)
+└───────────────────────── minute (0 - 59)</code></pre>
+<p>An example use of this would be:</p>
+<pre><code>crontab -e
+schedule, echo "This is my first crontab entry" &gt; crontab-entry</code></pre>
+<p>This allows us to edit a crontab, which at the scheduled point echos into the crontab-entry file</p>
+<h2>at command</h2>
+<p>at command is like crontab but its for scheduling something only once</p>
+<p>When we run at it will put us in interactive mode like vim, we can escape by pressing CTRL + D</p>
+<p>Usage:</p>
+<pre><code>at HH::MM PM/AM</code></pre>
+<p>atq is used to list at entries</p>
+<p>atrm # is used to remove a listing</p>
+<p>atd is the daemon / service</p>
+<p>systemctl status atd manages the atd service</p>
+<p>Usage:</p>
+<pre><code>at TIME
+echo "First at entry &gt; at-entry"
+CTRL + D</code></pre>
+<p>An example format would be:</p>
+<pre><code>at 2:45 AM 101621</code></pre>
+<p>This would schedule at Oct 16th 2021</p>
+<pre><code>at 4PM + 4 days</code></pre>
+<p>Would schedule a job at 4pm 4 days from now</p>
+<pre><code>at now +5 hours</code></pre>
+<pre><code>at 8:00 AM Sun</code></pre>
+<h1>[2025-07-18] Day 34: Processes, Scheduling and Jobs</h1>
+<p>A UNIT IS ANY RESOURCE THAT SYSTEMD CAN MANAGE<br>EVERY ONE HAS A CONFIG FILE ENDING WITH .unit-type</p>
+<p>SERVICES ARE CALLED DAEMONS</p>
+<h2>systemctl or service</h2>
+<p>systemctl is a command that we can use to control system services.<br>It is available in version 7 and later and it replaces the SERVICE command!</p>
+<p>A usage example of this would be:</p>
+<pre><code>systemctl start|stop|status servicename.service
+systemctl enable servicename.service
+systemctl restart|reload servicename.service
+systemctl list-units --all</code></pre>
+<p>The output of systemctl has these columns:</p>
+<pre><code>Unit - The systemd unit name
+
+Load - Whether the unit's config has been parsed by systemd. The config of loaded units is kept in memory.
+
+Active
+
+Sub
+
+Description</code></pre>
+<h2>ps</h2>
+<p>Stands for Process Status, displays all the currently running processes in the Linux system<br>ps shows the processes of the current shell, it displays:</p>
+<p>PID - Unique process ID<br>TTY - Terminal type the user is logged into<br>TIME - Amount of CPU in minutes and seconds<br>CMD - Name of the command</p>
+<p>ps -e - Shows all of the running processes<br>ps aux - Shows all of the running processes in BSD format<br>ps -ef - Same as above in full format listing (MOST COMMON)<br>ps -u username - Shows all by username</p>
+<h2>top</h2>
+<p>top is used to show the Linux processes and it provides a real-time view of the system<br>It shows the summary information of the system and list of threads or processes which are managed by the Kernel</p>
+<p>When executed it goes into interactive mode, similar to VI, but we exit out by hitting q-</p>
+<p>Usage: top</p>
+<pre><code>PID - Shows task's unique process ID
+
+USER - Username of the task owner
+
+PR - The "PR" field shows the scheduling priority of the process from the perspective of the kernel
+
+NI - Nice Value of a task, Negative is higher priority
+
+VIRT - Total virtual memory used by the task
+
+RES - Memory consumed by the process in RAM
+
+SHR - Shared memory used
+
+S - Process state in single-letter form
+
+%CPU - CPU Usage
+
+%MEM - Memory Usage
+
+TIME+ - CPU time, the same as TIME but in hundreths of a second</code></pre>
+<p>top -u USERNAME<br>top then c - shows commands absolute path<br>top then k - this kills a process by process PID<br>top then M and P - sorts all running processes by memory usage</p>
+<h2>kill</h2>
+<p>Used to terminate processes manually<br>It sends a signal that terminates a process or group of processes</p>
+<p>Usage: kill OPTION PID</p>
+<p>Option: Signal name or signal number / ID<br>PID: Process ID</p>
+<p>kill -l gives a list of all signal names and numbers</p>
+<p>The most commonly used kill commands are:</p>
+<pre><code>kill PID
+kill -1 - restart
+kill -2 - interrupt, similar to control + c
+kill -9 - force kill a process
+kill -15 gracefully kill a process</code></pre>
+<p>Similar commands are:</p>
+<pre><code>killall
+pkill
+</code></pre>
+<h2>PROCESSES AND SIGNALS</h2>
+<p>Process:<br>Is a running program in a computer system. app, etc</p>
+<p>Signals:<br>Short message that is sent to a Process. ctrl + c is a signal<br>Interrupt, Control or Communicate</p>
+<p>Process Signals are sent to running processes to control behaviour.<br>They enable communication.</p>
+<p>There are 2 types of process signals:</p>
+<ul><li>Standard Signals</li><li>Real-Time Signals</li></ul>
+<p>Standard signal types:</p>
+<ul><li>SIGINT</li></ul>
+<p>  vim handles interrupt by going back into command mode.</p>
+<ul><li>SIGTERM</li></ul>
+<p>  causes vim to close gracefully, causes a save then closes the process</p>
+<ul><li>SIGKILL</li></ul>
+<p>  cannot be ignored by processes and forces a close on anything it is called against</p>
+<ul><li>SIGSTOP</li></ul>
+<p>  pauses a process</p>
+<ul><li>SIGCONT</li></ul>
+<p>  unpauses a process</p>
+<ul><li>SIGRTMIN</li></ul>
+<p>  used to check is a process is actually alive</p>
+<ul><li>SIGSEGV (segmentation fault)</li></ul>
+<h1>[2025-07-16] Day 33: System Utility Commands (DATE, UPTIME, HOSTNAME, UNAME, WHICH, CAL, BC)</h1>
+<ul><li>date - Time and date</li></ul>
+<ul><li>uptime - How long the machine has been up, how many users are logged on the machine and the load average for those users</li></ul>
+<ul><li>hostname - Tells you the name of the system</li></ul>
+<ul><li>uname - Tells you if you are on linux or not, can use uname -a</li></ul>
+<ul><li>which - Tells you where the command is located (which COMMAND)</li></ul>
+<ul><li>cal - Gives us a calander, can view months with (cal MONTH YEAR)</li></ul>
+<ul><li>bc - Binary calculator</li></ul>
+<h1>[2025-07-15] Day 32 pt 2: Linux Account Authentication (LDAP, IDM, WinBIND, OpenLDAP)</h1>
+<p>Types of accounts:</p>
+<ul><li>Local accounts</li><li>Domain/ Directory accounts</li></ul>
+<p>Differences between:</p>
+<ul><li>Active Directory - Microsoft</li></ul>
+<ul><li>IDM - Identity Manager</li></ul>
+<p>  Is Redhat's "centralized and unified way to manage identity stores, authentication, policies, and authorization policies in a Linux-based domain."</p>
+<ul><li>WinBIND - Used in Linux to communicate with Windows (Samba)</li></ul>
+<ul><li>OpenLDAP (open source)</li></ul>
+<ul><li>IBM Directory Server</li></ul>
+<ul><li>JumpCloud</li></ul>
+<ul><li>LDAP - Lightweight Directory Access Protocol</li></ul>
+<h1>[2025-07-15] Day 32: Special Permissions (setuid, setgid and sticky bit)</h1>
+<p>Permissions on files and directories are referred to as bits:</p>
+<ul><li>r w x   r w x    r w x</li></ul>
+<p>  user    groups   others</p>
+<p>There are 3 additional permissions in Linux:</p>
+<ul><li>setuid: bit tells linux to run a program with effective user id of the owner instead of the executor</li></ul>
+<p>  An example of this is passwd, which runs as root as it has to update /etc/shadow</p>
+<ul><li>setgid: bit tells linux to run a program with the effective group id of the owner instead</li></ul>
+<p>  An example of this is the locate or wall command, this is only present for files with executable perms</p>
+<ul><li>sticky bit: is a bit set on files/ directories that allows only the owner or root to delete them</li></ul>
+<p>To assign perms at the user level we use chmod u+s filename to add</p>
+<p>To assign perms at the group level we use chmod g+s filename to add</p>
+<p>To find all exectuables with setuid and setgid we can run:</p>
+<pre><code>find / -perm /6000 -type f</code></pre>
+<p>THESE BITS ONLY WORK ON C AND NOT BASH</p>
+<p>Sticky bit:<br>It is assigned to the last bit of permissions: rwx rwx rw(t)<br>This is done with chmod:</p>
+<pre><code>chmod +t filename</code></pre>
+<h1>[2025-07-13] Day 31: Talking to Users (user, wall, write)</h1>
+<ul><li>users is used to see who is logged into the machine</li></ul>
+<ul><li>wall is used to broadcast a message to every user on a system</li></ul>
+<pre><code>wall
+
+MESSAGE HERE</code></pre>
+<ul><li>write is used to message individual users:</li></ul>
+<pre><code>write USERNAME
+
+MESSAGE
+ctrl + D for EOF</code></pre>
+<h1>[2025-07-12] Day 30: User Monitoring (who, last, w, id)</h1>
+<ul><li>who tells you who is logged in, their user id. Tells you who the terminal is owned by and the time it was opened</li></ul>
+<ul><li>last shows a list of the last logged-in users, using the system log file (/var/log/wtmp).</li></ul>
+<p>This is done in chronological order.</p>
+<p>We can use last -n to see a number of the most recent login entries.</p>
+<p>You can display this while hiding the hostname by using last -R USERNAME.</p>
+<p>You can use last -F to display login and logout times with corresponding dates.</p>
+<p>To display the last column of the output we can use the -a option.</p>
+<p>You can also filter the entries to a specific period using last -s FROM -t TO<br>We can use date and time formats for this:</p>
+<pre><code>YYYYMMDDhhmmss
+YYYY-MM-DD hh:mm:ss
+YYYY-MM-DD hh:mm      (seconds will be set to 00)
+YYYY-MM-DD            (time will be set to 00:00:00)
+hh:mm:ss              (date will be set to today)
+hh:mm                 (date will be set to today, seconds to 00)
+now
+yesterday             (time is set to 00:00:00)
+today                 (time is set to 00:00:00)
+tomorrow              (time is set to 00:00:00)
++5min
+-5days</code></pre>
+<p>You can use last -d to translate ip adresses into hostnames.</p>
+<ul><li>w works similar to who, gives login time, idle time and what process are being run by the user</li></ul>
+<ul><li>finger / pinky on centOS 8 and above. Does not come default (# yum install finger -y)</li></ul>
+<ul><li>id , without giving a username it gives you information about your account, it tells you the groups that a user is a part of</li></ul>
+<h1>[2025-07-10] Day 29 pt2: Switch users and sudo Access:</h1>
+<p>To change user: su - username</p>
+<p>sudo is how we run a command if we are not root</p>
+<p>visudo edits the /etc/sudoers file that tells who is allowed to use the sudo command or not</p>
+<p>The most efficent way to give a certain user sudo access by adding them to the group wheel:</p>
+<pre><code>usermod -aG wheel USER</code></pre>
+<h1>[2025-07-10] Day 29: Password Aging (chage):</h1>
+<p>The command used to change password aging is:</p>
+<pre><code>chage [-d LASTday] [-m MINdays] [-M MAXdays] [-d LASTday] [-I inactive] [-E EXPIREdate] [-W WARNdays] user</code></pre>
+<p>This is all stored in /etc/login.defs:</p>
+<pre><code>more /etc/login/login.defs</code></pre>
+<p>-d days since last changed</p>
+<p>-m minimum number of days before the the user is allowed to change his password</p>
+<p>-M maximum number of days that the password us valid before a forced change</p>
+<p>-W number of days before the password is to expire, that the user is warned to change</p>
+<p>-I number of days after the account expires that the account is disabled</p>
+<p>-E number of days since Jan 1, 1970 that the account expires</p>
+<h1>[2025-07-06] Day 28: User Account Management (useradd, groupadd, usermod, userdel, groupdel)</h1>
+<p>An example:</p>
+<pre><code># sets the primary group
+useradd -g GROUP
+
+# creates the user's home directory
+useradd -m -d /home/USERNAME
+
+# sets the default shell for that user
+useradd -s /bin/bash
+
+# sets an expiration date for the user
+useradd -e YYYY-MM-DD
+
+# sets a comment on the user
+useradd -c
+
+# Do not create a home directory (useful for service or system accounts)
+useradd -M</code></pre>
+<p>Multiple things can be done in one command:</p>
+<pre><code>useradd -g GROUP -s /bin/bash -c "comment" -m -d /home/USERNAME USERNAME</code></pre>
+<p>To remove a user and their home directory you would run:</p>
+<pre><code>userdel -r USER</code></pre>
+<p>To remove a group we do:</p>
+<pre><code>groupdel GROUPNAME</code></pre>
+<p>We can create a group with usermod -G group GROUPNAME<br>We can then confirm if it has been created with:</p>
+<pre><code>grep spiderman /etc/group</code></pre>
+<p>To change a user's group on ls -ltr you have to use:</p>
+<pre><code>chgrp -R GROUP USER</code></pre>
+<p>In the passwd the syntax of the lines is:</p>
+<pre><code>name:passwordencrypted:groupnum:usernum:description:homedir:shell</code></pre>
+<p>etc/shadow is for passwords of users we create and their expiration</p>
+<p>You can change a password with:</p>
+<pre><code>passwd USER</code></pre>
+<h1>[2025-07-05] Day 27: "sed" command</h1>
+<p>"sed" replaces a string in a file with a newstring<br>It can also find and delete a line<br>It can remove empty lines<br>Remove the first line or n lines in a file<br>Replace tabs with spaces</p>
+<pre><code>sed 's/WORD/CHANGETO/g filename</code></pre>
+<p>g is globally, it replaces all instances</p>
+<p>sed changes in the cli but not in the file<br>To make a change to the existing file you have to use</p>
+<pre><code>sed -i</code></pre>
+<p>To insert the changes to the given file</p>
+<p>We can use sed to remove a given string by replacing CHANGETO to nothing</p>
+<p>To find a delete we would use:</p>
+<pre><code>sed '/FIND/d' FILENAME</code></pre>
+<p>d is used to delete all of the found lines</p>
+<p>To delete empty lines using sed we would use:</p>
+<pre><code>sed '/^$/d' FILENAME</code></pre>
+<p>^ anything that starts with nothing $ anything that ends with nothing</p>
+<p>To remove the first line you would do:</p>
+<pre><code>sed '1d' FILENAME</code></pre>
+<p>We can use it to replace indents with spaces:</p>
+<pre><code>sed 's/\t/ /g' FILENAME</code></pre>
+<p>Show specific line numbers</p>
+<pre><code>sed -n START,FINISHp FILENAME</code></pre>
+<p>To exclude the lines:</p>
+<pre><code>sed START, ENDd FILENAME</code></pre>
+<p>To add empty lines between lines:</p>
+<pre><code>sed G FILENAME</code></pre>
+<p>Replace with line exceptions:</p>
+<pre><code>sed '8!s/REPLACE/CHANGETO/g' FILENAME</code></pre>
+<p>To replace in vi:</p>
+<pre><code>:%s/STRING/CHANGETO/</code></pre>
+<h1>[2025-07-03] Day 26: Vi Editor</h1>
+<p>vi has commands for inserting and deleting text, replacing text, finding and substituting strings, cutting and pasting text.<br>Luckily it is not my first time using Vi so this is not completely new to me.</p>
+<p>Some common inputs for vi are:</p>
+<ul><li>i this puts you into insert mode and allows you to type normally</li></ul>
+<ul><li>Esc key lets you exit out of any mode, most commonly to exit insert into command mode</li></ul>
+<ul><li>r is for replace</li></ul>
+<ul><li>u is for undo</li></ul>
+<ul><li>x to remove a single character</li></ul>
+<ul><li>a will advance to the next word</li></ul>
+<ul><li>d is for delete, using this at the start of a line removes the whole line</li></ul>
+<ul><li>:q! is to quit without saying</li></ul>
+<ul><li>:wq is to write and quit</li></ul>
+<ul><li>/desiredword this will find and highlight your desired word</li></ul>
+<p>Resources to try out:</p>
+<p>vimgenius<br>vim adventures</p>
+<h1>[2025-07-02] Day 25 pt2: Windows vs Linux Commands</h1>
+<p>| Command Description                         | Windows     | Linux           |<br>|--------------------------------------------|-------------|------------------|<br>| Listing of a directory                     | `dir`       | `ls -l`          |<br>| Rename a file                              | `ren`       | `mv`             |<br>| Copy a file                                | `copy`      | `cp`             |<br>| Move file                                  | `move`      | `mv`             |<br>| Clear screen                               | `cls`       | `clear`          |<br>| Delete file                                | `del`       | `rm`             |<br>| Compare contents of files                  | `fc`        | `diff`           |<br>| Search for a word/string in a file         | `find`      | `grep`           |<br>| Display command help                       | `command /?`| `man command`    |<br>| Displays your location in the file system  | `chdir`     | `pwd`            |<br>| Displays the time                          | `time`      | `date`           |</p>
+<h1>[2025-07-02] Day 25: Combining and Splitting Files.</h1>
+<p>Multiple files can be combined into one and one file can be split into multiple.<br>Split, if no input_file is given, reads from stdin</p>
+<pre><code>cat file1 file2 file3 &gt; file4</code></pre>
+<p>This opens and outputs these files into file4</p>
+<pre><code>split -l 300 file.txt childfile</code></pre>
+<p>This would split file.txt into childfiles at 300 lines each</p>
+<p>-b is also an option with --bytes=NUM to seperate files by byte size instead.</p>
+<h1>[2025-07-01] Day 24: Truncate File Sizes</h1>
+<p>truncate is foten used to shrink or extend a file to the specified size, it doesn't compress it CUTS/CHOPS, it is destructive.</p>
+<p>-s dictates that you want to shrink a file</p>
+<pre><code>truncate -s size_in_bytes file_name</code></pre>
+<p>truncate can be used to extend or shrink:</p>
+<pre><code>truncate -s 10M
+
+truncate -s +5K
+
+truncate -s -2K</code></pre>
+<p>This would set the file to 10MB, add 5KB to the file and subtract 2KB from the file specified.</p>
+<h1>[2025-06-29] Day 23: Compress and uncompress files (tar, gzip, gunzip)</h1>
+<h2>tar</h2>
+<p>tar doesn't compress and reduce size it just groups them together.</p>
+<pre><code>tar cvf file_name.tar dir_to_tar</code></pre>
+<p>-c create a tar archive with no compression</p>
+<p>-t lists and shows contents of the archive</p>
+<p>-z filters the archive through gzip</p>
+<p>-f use the next argument as the filename</p>
+<p>we replace the t with x if we want to extract:</p>
+<pre><code>tar -xzf mybackup.tar.gz</code></pre>
+<h2>gzip</h2>
+<p>gzip compresses a tar making the file size smaller</p>
+<p>| Option    | Description                                                    |<br>|-----------|----------------------------------------------------------------|<br>| -d        | Decompress the compressed file (same as `--decompress`)        |<br>| -c        | Write output to standard output (stdout), keep original files  |<br>| -k        | Keep original files (do not delete after compression)          |<br>| -f        | Force compression or decompression even if errors occur        |<br>| -h        | Display help message and exit                                  |<br>| -l        | List information about compressed files                        |<br>| -n        | Do not save original file name and timestamp                   |<br>| -N        | Save original file name and timestamp (default)                |<br>| -q        | Quiet mode (suppress warnings)                                 |<br>| -r        | Recursively compress files in directories                      |<br>| -S suffix | Use specified suffix instead of `.gz` for compressed files     |<br>| -# (1-9)  | Compression level: 1 = fastest, 9 = best compression           |<br>| --fast    | Equivalent to `-1`, fastest compression                        |<br>| --best    | Equivalent to `-9`, best compression                           |<br>| --list    | Same as `-l`, list compressed file info                        |<br>| --no-name | Same as `-n`, do not save file name and timestamp              |<br>| --name    | Same as `-N`, save file name and timestamp                     |<br>| --version | Show version information                                       |</p>
+<h2>gzip -d or gunzip</h2>
+<p>gzip -d or gunzip is used to uncompress a tar</p>
+<h1>[2025-06-26] Day 20/21/22: Filters / Text Processing Commands (cut awk grep sort)</h1>
+<p>In efforts to centralise the working enviroment and minimise the effort required to begin learning, I decided to setup the CentOS Stream 9 machine on the main PC.</p>
+<ul><li>Download oracleboxVM</li><li>Grab a CentOS Stream 9 iso</li><li>Remember that I have VT-x off in my bios and give up and go back to the laptop</li></ul>
+<h2>CUT</h2>
+<ul><li>cut allows you to extract a desired field from a file or input and it writes the ouput to stdout.</li></ul>
+<pre><code>cut -c1 file_name </code></pre>
+<p>This would give us a list of all the First characters of each line.</p>
+<p>cut also has:</p>
+<p>-b select the bytes (-b 1-5) will get bytes 1 to 5</p>
+<p>-c select characters (-c 3-7)</p>
+<p>-f select fields (used with -d)</p>
+<p>-d set the delimiter for fields (default is tab)</p>
+<p>--complement inverts the selects (show everything expect the specified bytes, characters or fields)</p>
+<p>-f and -d is very useful in combination, an example document could be:</p>
+<pre><code>egg,chicken,milk,toast
+who,what,where,why
+loose,goose,obtuse,truce</code></pre>
+<p>Using (cut -d ',' or cut -d,) this splits the lines into columns and if you add -f you can select which columns you want:</p>
+<pre><code>cut -d, -f 2 file.txt</code></pre>
+<p>This would give us the 2nd index of each line so it would return us:</p>
+<pre><code>chicken
+what
+goose</code></pre>
+<h2>AWK</h2>
+<ul><li>awk allows you to search through a text file by columns. It is somewhat similar to cut, but it is an implementation of a domain specific language designed for text processing and data extraction.</li></ul>
+<p>A very basic structure for using awk is:</p>
+<pre><code>awk 'pattern { action }' filename.txt</code></pre>
+<p>A use-case for this would be from piping in ls -l:</p>
+<pre><code>ls -l | awk '{print $1, $3}'</code></pre>
+<p>To get the last entry of a list, instead of $-1 we have to use $NF which stands for number of fields:</p>
+<pre><code>awk {print $NF} filename.txt</code></pre>
+<p>We can also search for a specific word using awk like so:</p>
+<pre><code>awk '/word/ {print}' filename.txt</code></pre>
+<p>Another use of awk, similar to cut:</p>
+<pre><code>awk -F '{print $1} /etc/passwd'</code></pre>
+<p>The $1 is the column that we cant from the list, this would display each of the first entries.</p>
+<p>We can also use awk to replace words in fields:</p>
+<pre><code>echo "Hellowl World" | awk '$2="Sauce" ; print $0'</code></pre>
+<p>We can use awk to find entries logner than a given length:</p>
+<pre><code>awk 'length($0) &gt; 15' filename.txt</code></pre>
+<p>Matching fields:</p>
+<pre><code>awk '{if($NF == "desired_name") print $0;}'</code></pre>
+<p>Number of fields:</p>
+<pre><code>awk '{print NF}'</code></pre>
+<h2>GREP EGREP</h2>
+<ul><li>grep and egrep (global regular expression print) allows you to search for specific text within files. Can find words, phrases, patterns in one or multiple files.</li></ul>
+<pre><code>grep -- version
+grep --help</code></pre>
+<p>Grep has a number of useful options:</p>
+<p>-i Ignores case</p>
+<p>-v Invert match</p>
+<p>-r Recursive search</p>
+<p>-n Show line numbers</p>
+<p>-c Count matches</p>
+<p>-l List filenames with matches</p>
+<p>-e Use multiple patterns</p>
+<p>A simple use of grep is:</p>
+<pre><code>grep desired_string file_name</code></pre>
+<p>An example of grep -c would be:</p>
+<pre><code>grep_test.txt contains:
+a,b,c,d
+a,b,c,d
+a,b,c,d
+
+grep -c b grep_test.txt</code></pre>
+<p>This would print 3</p>
+<p>An example of grep -i would be:</p>
+<pre><code>grep_test.txt contains:
+a,B,c,d
+a,B,c,d
+a,b,c,d
+
+grep -i b grep_test.txt</code></pre>
+<p>This would print:</p>
+<pre><code>a,B,c,d
+a,B,c,d</code></pre>
+<p>An example of grep -n would be:</p>
+<pre><code>grep_test.txt contains:
+a,B,c,d
+a,B,c,d
+a,b,c,d
+
+grep -n b grep_test.txt</code></pre>
+<p>This would print:</p>
+<pre><code>3:a,b,c,d</code></pre>
+<p>An example of grep -n would be:</p>
+<pre><code>grep_test.txt contains:
+a,B,c,d
+a,B,c,d
+a,b,c,d
+
+grep -v b grep_test.txt</code></pre>
+<p>This would print:</p>
+<pre><code>a,B,c,d
+a,B,c,d</code></pre>
+<p>We can also combine grep with awk:</p>
+<pre><code>grep_test.txt contains:
+a,B,c,d
+a,B,c,d
+a,b,c,d
+
+grep b grep_test.txt | awk '{print $3}'</code></pre>
+<p>This would give us:</p>
+<pre><code>c</code></pre>
+<p>egrep is used when you want to find multiple keywords. The syntax for this is:</p>
+<pre><code>egrep keyword1|keyword2 file_name.txt</code></pre>
+<h2>SORT</h2>
+<ul><li>sort reorders a file numerically or alpabetically and prints the result to stdout.</li></ul>
+<pre><code>sort --version
+sort --help </code></pre>
+<p>sort and it's options are:</p>
+<p>-r reverse order</p>
+<p>-n numeric sort</p>
+<p>-u unique lines</p>
+<p>-k sort by key (column)</p>
+<p>-t set field delimiter</p>
+<p>-h Readable numeric sort(1K 2M)</p>
+<p>-o Write result to file (sort file.txt -o sorted_file.txt)</p>
+<p>-C NUM shows context in the way of number of lines before and after</p>
+<p>sort's primary use is:</p>
+<pre><code>example_text.txt:
+b,c,d,j
+z,c,d,e
+e,f,y,t
+a,b,c,d
+
+sort example_text.txt</code></pre>
+<p>This would output:</p>
+<pre><code>a,b,c,d
+b,c,d,j
+e,f,y,t
+z,c,d,e</code></pre>
+<h2>UNIQ</h2>
+<ul><li>uniq will not show duplicates, will print any single instances.</li></ul>
+<p>-c Prefix lines with the number of occurrences</p>
+<p>-d Only print duplicate lines</p>
+<p>-u Only print unique lines</p>
+<p>-f N Ignore first N fields</p>
+<p>-s N Ignore first N characters</p>
+<p>-i Case-insensitive comparison</p>
+<pre><code>uniq_test.txt contains:
+a,B,c,d
+a,B,c,d
+a,b,c,d
+
+uniq uniq_test.txt</code></pre>
+<p>This would print:</p>
+<pre><code>a,b,c,d</code></pre>
+<h2>Comparing file (diff and cmp)</h2>
+<ul><li>diff is line by line</li></ul>
+<p>Diff compares line by line and hows how they differ, it shows the changes need to make the files match.<br>Has the options:</p>
+<p>-u unified format<br>-y side by side comparision</p>
+<ul><li>cmp is byte by byte</li></ul>
+<p>If the files are the same then there is no output other than a 0 exit code.<br>If they differ then it prints the first difference it finds.</p>
+<h2>WC</h2>
+<ul><li>wc tells you how many words, letters or lines you have.</li></ul>
+<p>It has the options:</p>
+<p>-l Count lines</p>
+<p>-w Count Words</p>
+<p>-c Count Bytes</p>
+<p>-m Count Characters</p>
+<p>-L Show longest line length</p>
+<h1>[2025-06-25] Day 19 pt4: File Display Commands !!!SUPER USEFUL!!!</h1>
+<p>Here's a list of file display commands:</p>
+<ul><li>cat concatenate and display the contents of a file</li></ul>
+<ul><li>more views the content of a file one page at a time</li></ul>
+<ul><li>less allows you to view text files one page at a time</li></ul>
+<ul><li>head allows you to see a few times at the front or top of a file</li></ul>
+<ul><li>tail allows you to see lines at the end or the bottom of a file</li></ul>
+<h1>[2025-06-25] Day 19 pt3: File Maintenance Commands !!!SUPER USEFUL!!!</h1>
+<p>Here's a list of file maintenence commands:</p>
+<ul><li>cp copy</li></ul>
+<ul><li>rm remove</li></ul>
+<ul><li>mv move</li></ul>
+<ul><li>mkdir create directory</li></ul>
+<ul><li>rmdir or rm -r remove directory</li></ul>
+<ul><li>chgrp change group</li></ul>
+<ul><li>chown change ownership</li></ul>
+<h1>[2025-06-25] Day 19 pt2: Executing Multiple Commands with ;</h1>
+<p>An example of using multiple commands with ; is:</p>
+<pre><code>ls ; ipconfig ; pwd</code></pre>
+<p>This would execute ls then ipconfig then pwd.<br>A very useful example of this would be done before executing any commands that need to be in a specific spot:</p>
+<pre><code>whoami ; pwd ; hostname ; ip a</code></pre>
+<p>The series of commands executes one by one so even if one fails the next will be executed.</p>
+<p>A series of commands that I could have used in autofile if I decided to keep the code in bash instead of python would have been:</p>
+<pre><code>mkdir nameinlist ; cd nameinlist ; touch nameinlist </code></pre>
+<h1>[2025-06-25] Day 19: Pipes (|)</h1>
+<p>A pipe is used by the shell to connect the input of another command<br>The symbol of pipe is | and the command syntax is:</p>
+<pre><code>command1 [arguments] | comannd2 [arguments]</code></pre>
+<pre><code>ls -ltr | more</code></pre>
+<p>This will give us the output of ls-ltr one page at a time, spacebar lets us move down a page and q allows us to quit. ll can also be used as an alternative to ls-l</p>
+<p>``<br>ls -l | tail -1<br>``<br>This would give us the last line from the output of  ls -l</p>
+<h1>[2025-06-21] Day 18: Standard Output to a file (tee)</h1>
+<p>tee is used to store and view (simultaneously) the output of a command, it is named after the T-splitter in plumbing.<br>It breaks the output of a command so it can be displayed and saved, the result is copied in to specified files or varirables AND displayed.</p>
+<pre><code>command --&gt; tee --&gt; stdout
+             |
+            file</code></pre>
+<p>Before starting, some basic checks:--</p>
+<pre><code>whoami
+pwd
+hostname</code></pre>
+<p>To check we are who and where we want to be.</p>
+<p>We can use > to output a command to a file such as:</p>
+<pre><code>echo "world, hello" &gt; hereiam
+cat hereiam # this would output "world,hello"</code></pre>
+<p>This would write the output of the command to hereiam but it wouldn't display anything in the cli.</p>
+<p>If we instead did:</p>
+<pre><code>echo "world,hello" | tee hereiam</code></pre>
+<p>This would write to hereiam and would display the contents in the cli.</p>
+<p>To use tee without overwriting the contents of the destination file we would have to use tee with -a:</p>
+<pre><code>echo "world,hello" | tee -a hereiam</code></pre>
+<p>This would append the output onto the end of the given file.</p>
+<p>Another command we can use with these files is wc, wc stands for word count and can be used with a few flags:</p>
+<pre><code>wc -l # lines
+wc -w # words
+wc -m characters
+wc -c bytes</code></pre>
+<p>tee can also be used with commands like ls -l:</p>
+<pre><code>ls -l | -a listdir</code></pre>
+<p>This will output in the cli but also create a file and append to it.</p>
+<p>You can also tee to multiple files if the names are added with a space.</p>
+<h1>[2025-06-18] Day 17: Input and Output Redirects</h1>
+<p>There are three (3) redirects in Linux:</p>
+<ul><li>Standard input (stdin), it has the file descriptor number as 0</li></ul>
+<ul><li>Standard output (stdout), it has the file descriptor number as 1</li></ul>
+<ul><li>Standard error (stderr), it has the file descriptor number as 2</li></ul>
+<p>The output of a command can be routed to a file using > (stdout -1)</p>
+<pre><code>ls -l &gt; listings
+pwd &gt; findpath</code></pre>
+<ul><li>A single > Overwrites, replaces and if it does not exist it will create the file.</li></ul>
+<ul><li>A double >> Appends to the end of the file, if it does not exist it will be created.</li></ul>
+<p>The input of a command can be routed by using "< (stdin -0)"</p>
+<pre><code>cat &lt; file.txt
+sort &lt; file.txt</code></pre>
+<p>Double "<<" also exists and is used to feed multiple lines into a command such as sort, this is known as a heredoc:</p>
+<pre><code>cat &lt;&lt; EOF
+this is line one
+this is line two
+EOF</code></pre>
+<p>This would print the two lines when used with cat, it can also be used with other commands.</p>
+<p>You can also use variables inside the heredoc such as:</p>
+<pre><code>name = "OWL"
+
+cat &lt;&lt; END
+Hello, $name!
+END</code></pre>
+<p>This can be disabled by quoting the end marker:</p>
+<pre><code>cat &lt;&lt; "END" </code></pre>
+<p>If the command that is typed in produces and error it is then considered (stderr -2)</p>
+<p>You can use these errors and redirect them to files by using ></p>
+<pre><code>ls -l /root 2&gt; errorlog
+telnet localhost 2&gt; errorlog</code></pre>
+<p>This will redirect the errors into the determined file.</p>
+<h1>[2025-06-11] Day 16: Basic Shell Scripting intro</h1>
+<h2>WHAT is shell scripting</h2>
+<p>Shell scripting is a list of commands that the systems runs one after the other.</p>
+<p>The shell interprets commands and by chaining commands in a script we can do many useful things such as:</p>
+<ul><li>Move multiple files from one dir to another.</li></ul>
+<ul><li>Find patterns in files.</li></ul>
+<ul><li>Monitor system resources such as CPU and Memory.</li></ul>
+<p>Scripting is useful for a few reasons:</p>
+<ul><li>Automation: Backups, Software updates, Health checks at set intervals, Clean temporary files.</li></ul>
+<ul><li>Customization: Can be adjusted and tailored for specific sets of files, specific system setups. For example: A custom script that checks CPU load on a server and alerts you if it is exceeded.</li></ul>
+<ul><li>Efficiency: Allows you to integrate with powerful and common system tools such as: grep, awk, sed, find. For example: A script that pulls specific logs and generates a report with only a few lines of code.</li></ul>
+<ul><li>Portability: Highly transferable to other Unix and Unix-like systems if written in a common shell like Bash. Very useful to standardize operations across different environments.</li></ul>
+<ul><li>Powerful and Flexible: Allows the use of things such as grep to find and process. For example: program that extracts log entries from multiple files (servers, users) and generates a report.</li></ul>
+<h2>Types of shells:</h2>
+<ul><li>Bash (Bourne Again Shell), most popular, successor to the original Bourne Shell (sh).</li></ul>
+<ul><li>Zsh (Z Shell), has additional features like better tab completion, syntax highlighting.</li></ul>
+<ul><li>Fish (Friendly Interactive Shell) Modern, user friendly, auto suggestions, syntax highlighting.</li></ul>
+<h2>WRITING A SHELL SCRIPT:</h2>
+<p>First we have to create a file, we can do this in two ways:</p>
+<pre><code>touch script.sh
+vim script.sh</code></pre>
+<p>We then have to tell the operating system what Shell we want to interperate using a shebang:</p>
+<pre><code>#!/bin/bash</code></pre>
+<p>#! tells the system should run using the interpreter stated after.</p>
+<p>/bin/bash is the path to Bourne again.</p>
+<p>Doing this allows us to state what shell we want to use even though our default might be different.</p>
+<p>An example of a very basic script could be:</p>
+<pre><code>#!/bin/bash
+echo "Helowl, World!"</code></pre>
+<p>:wq in VIM to write and quit</p>
+<p>Execute permissions may need to be set using chmod [Covered here in day 12](https://lmno.lol/basowl/day-12-file-permissions)</p>
+<pre><code>chmod -x script.sh</code></pre>
+<p>OR</p>
+<pre><code>chmod 111 script.sh</code></pre>
+<h1>[2025-05-23] Day 15: !!! Help Commands & Tab completion !!!</h1>
+<h2>Help</h2>
+<p>There are 3 types of help commands:</p>
+<ul><li>whatis</li></ul>
+<p>  This can only work if mandb has been run by root atleast once before.</p>
+<ul><li>--help</li></ul>
+<ul><li>man</li></ul>
+<h2>Tab completetion</h2>
+<p>Hitting tab in the CLI auto complete things such as filenames:</p>
+<pre><code>chm # if you hit tab it will autofill to chmod
+
+cd Des # if you hit tab it will autofill to cd Desktop</code></pre>
+<p>If you hit tab and there are multiple things that it could fill as, it will display all the options that you could have.</p>
+<h2>Up Arrow</h2>
+<p>Hitting the UP arrow in the CLI will allow us to see the previous command(s) and if desired, repeated.</p>
+<h1>[2025-05-22] Day 14: Access Control List</h1>
+<p>The ACCESS CONTROL LIST is an additional and more flexible permission system.<br><br>It allows you to give permissions for any user or group to any disc resource.<br>Basically, an ACL is a flexible permission mechanism in Linux.</p>
+<h2>The primary purpose of ACL is to give individual users permissions without giving ALL users access</h2>
+<ul><li>--------(---) setting the last group to have either read or right access would give it to ALL users, this is where ACL comes in.</li></ul>
+<p>The commands used to interact with ACL permissions are:</p>
+<pre><code>setfacl
+
+getfacl</code></pre>
+<h2>getfacl</h2>
+<pre><code># file: name
+# owner: root
+# group: root
+user::---
+group::---
+other::-----</code></pre>
+<h2>ADD</h2>
+<p>To add permissions for a user:</p>
+<pre><code>setfacl -m u:user:rwx /path/to/file</code></pre>
+<p>To add permissions for a group:</p>
+<pre><code>setfacl -m g:group:rw /path/to/file</code></pre>
+<p>To allow all files and directories to inherit ACL entries from the parent directory you use:</p>
+<pre><code>setfacl -Rm "entry" /path/to/dir</code></pre>
+<h2>REMOVE</h2>
+<p>To remove a specific entry for a specific user:</p>
+<pre><code>setfacl -x u:user /path/to/file</code></pre>
+<p>To remove all entries for all users:</p>
+<pre><code>setfacl -b path/to/file</code></pre>
+<p>If you assign ACL permissions to a file or directory it will affix a "+" to the permissions.<br>Setting write permissions with ACL does not allow file removal.</p>
+<h1>[2025-05-20] Day 13: File Ownership</h1>
+<p>Files and directories have two owners. User and Group.</p>
+<p>In order to change the ownership of a file we can use either:</p>
+<pre><code>chown
+
+chgrp</code></pre>
+<ul><li>chown changes the ownership of a file</li><li>chgrp changes the group ownership.<br></li></ul>
+<p>"-R" is to tell the changes to be recursive and change ownership of everything in a directory.</p>
+<h1>[2025-05-17] Day 12: File Permissions (chmod)</h1>
+<p>Every file and directory in an account can be protected from or made accessible to other users by changing its permissions.</p>
+<p>Permissions for a file or directory may be restricted to one of theese three:</p>
+<ul><li>r - read</li></ul>
+<ul><li>w - write</li></ul>
+<ul><li>x - execute or run</li></ul>
+<p>Each permission (rwx) can be controlled by groups:</p>
+<ul><li>u - user (yourself)</li></ul>
+<ul><li>g - group (a selection of people)</li></ul>
+<ul><li>o - other (everyone on the system)</li></ul>
+<ul><li>a all</li></ul>
+<p>This can be seen when using</p>
+<pre><code>ls -l</code></pre>
+<p>And you end up with:</p>
+<pre><code>-rwxrwxrwx</code></pre>
+<p>This tells you the permissions for user group other in that order.</p>
+<p>The command to change permissions is:</p>
+<pre><code>chmod
+
+chmod g-w "name" # this would remove write permissions for the group
+
+chmod a-x "name" # this would stop everyone accessing the directory</code></pre>
+<p>Permissions can also be changed using Numeric Mode:</p>
+<pre><code>chmod ugo+r "name" # can also be done as:
+
+chmod 444 "name"</code></pre>
+<p>The order of permissions determined this way are: USER, GROUP, OTHER</p>
+<h2>Numeric Mode Table:</h2>
+<p>| Number | Permission Type           | Symbol |<br>|--------|---------------------------|--------|<br>| 0      | No Permission             | ---    |<br>| 1      | Execute                   | --x    |<br>| 2      | Write                     | -w-    |<br>| 3      | Execute + Write           | -wx    |<br>| 4      | Read                      | r--    |<br>| 5      | Read + Execute            | r-x    |<br>| 6      | Read + Write              | rw-    |<br>| 7      | Read + Write + Execute    | rwx    |</p>
+<h1>[2025-05-10] Day 11: Command syntax</h1>
+<p>Commands typically have the syntax: command option(s) argument(s).</p>
+<p>These can be found through the CLI by typing:</p>
+<pre><code>man &lt;command&gt;</code></pre>
+<h2>Options</h2>
+<p>Options usually modify the way a command works. It usually consists of a hyphen followed by a single letter. The most common example being:</p>
+<pre><code>ls -l</code></pre>
+<p>Some commands accept multiple options which can be usually be grouped to gether using a single hyphen.</p>
+<h2>Arguments</h2>
+<p>Most commands are used together with one or more arguments. However, some commands assume a default command if one isn't provided. Optional for some, required by others.</p>
+<h1>[2025-05-07] Day 10: Soft and Hard links</h1>
+<p>Before going into links we need to know about Inode which is a pointer or number of a file on the disk. This is how the computer identifies a file.</p>
+<pre><code>my-hard-link   myfile.txt &lt;----  my-soft-link
+      \             |          
+       \            v          
+        \-----&gt;  inode </code></pre>
+<h2>Soft Link</h2>
+<p>A soft link is a link that will be removed if the source file is removed or renamed.</p>
+<p>The command to create a soft link is:</p>
+<pre><code>ln -s</code></pre>
+<p>To test this out practically I go to my linux installation and create a file using "touch linktest"<br>I then used "cd /tmp" and "ln -s /home/a/linktest" and "ls -ltr" to check if it is successful.<br>We get a link and it beings with l to confirm it is a link.</p>
+<p>We can use "ls -ltri" to see the inodes of files and we can do this to see that linktest and the link TO linktest have different inodes but are able to access the same file. It is similar to a shortcut in windows.</p>
+<h2>Hard Link</h2>
+<p>A hard link is a link that will not be removed if the source file is deleted or renamed.<br>It is essentially a copy of the original file.<br>Preferably not to be used as it can lead to various issues that don't exist with softs.</p>
+<p>The command used to create a hard link is:</p>
+<pre><code>ln</code></pre>
+<h1>[2025-05-05] Day 9: Wildcards. !!!SUPER USEFUL!!!</h1>
+<h2>Wildcards</h2>
+<p>Wildcards are "characters that can be used as a substitute for any class of characters in a search" they are:</p>
+<ul><li>"*" represents zero or more characters</li></ul>
+<ul><li>"?" represents a single character</li></ul>
+<ul><li>"[]" represents the characters inside the brackets, can also be a range such as 1-5</li></ul>
+<ul><li>"{}" represents a determined range</li></ul>
+<ul><li>"\" is an escape character</li></ul>
+<ul><li>"^" indicates the beginning of the line</li></ul>
+<ul><li>"$" indicates the end of the line</li></ul>
+<p>These can be used in various ways and one example is with remove or rm:</p>
+<pre><code>rm abc*</code></pre>
+<p>This will remove anything that starts with abc and anything after it.</p>
+<p>Another example of the use of wildcards is creating multiple numbered files:</p>
+<pre><code>touch abc{1..9}</code></pre>
+<p>This will create 9 files with the name abc1 to abc9.</p>
+<p>The most common use of wildcards are when using find or locate in order to find multiple of a type of file. Such as .txt or for a certain user / block.</p>
+<p>Say we have created 5 files with touch abc{1..5} and another 5 with xyz{1..5}. This gives us a folder of 10 files. If we wish to see the details of a certain side, such as xyz:</p>
+<pre><code>ls -l xyz*</code></pre>
+<p>This will display all the files that start with xyz.</p>
+<h1>[2025-05-04] Day 8: File location and finding</h1>
+<p>There are two useful ways to find files in linux:</p>
+<h2>Find</h2>
+<pre><code>find &lt;location&gt; -name "fileName" </code></pre>
+<p>"." can be used to determine that we want the search to start in the current working directory. This only works for files and it will output where the file is if found: ./testFolder/test</p>
+<p>Find iterates over the filesystem to find what we are searching for, this means it is more accurate but much slower than locate.</p>
+<h2>Locate</h2>
+<pre><code>locate &lt;fileName&gt;</code></pre>
+<p>This outputs the location of the file: /home/a/testFolder/test</p>
+<p>Locate uses a prebuilt database, which should be updated regularily. Locate is faster due to this but unless it is updated it can be incorrect. To update locate we use:</p>
+<pre><code>updatedb</code></pre>
+<p>This should be done as root to make sure the correct database is being updated and not the temporary one.</p>
+<h1>[2025-05-02] Day 7: File creation / File copying</h1>
+<h2>File creation</h2>
+<ul><li>touch. This creates an empty file with nothing in it.</li></ul>
+<ul><li>cp. copies a source file to a destination.</li></ul>
+<pre><code>cp sourceFile destination</code></pre>
+<pre><code>cp -R &lt;sourceDir&gt; &lt;destinationDir&gt;</code></pre>
+<p>We use -R to tell copy that we are copying a directory and not a file.</p>
+<ul><li>vi or vim.</li></ul>
+<pre><code>vi fileName</code></pre>
+<p>To escape vim we have to make sure that we are not in insert mode, if we are we can get out of it by pressing ESC, we can then close the file by typing :WQ this stands for write and quit.</p>
+<h2>Directory creation</h2>
+<ul><li>mkdir. To make a directory</li></ul>
+<h1>[2025-05-01] Day 6: Root, passwords, absolute / relative paths.</h1>
+<p>Day 6 and temperatures outside are getting to the mid 30s, this makes it much harder to stay at the computer, but learning must be done.</p>
+<h2>What is root?</h2>
+<ul><li>Root account is an account or username that has access and permissions for all commands and files.</li></ul>
+<ul><li>Root directory is /: which is the first directory in linux. cd /.</li></ul>
+<ul><li>Root home directory which is the highest folder for a user. Located in /root</li></ul>
+<h2>Changing Passwords</h2>
+<pre><code>passwd userid</code></pre>
+<p>This asks us the old password and then asks us for a new password, we then have to retype the new password to confirm the change.<br>Only root can define a user to change.</p>
+<h2>File paths</h2>
+<p>There are two types of paths to files.</p>
+<ul><li>Absolute. An absolute path always begins with "/". An example being:</li></ul>
+<pre><code>cd /var/log/samba</code></pre>
+<ul><li>Relative. This does not begin with a "/" and it identifies a location based on your current position. An example being:</li></ul>
+<pre><code>cd /var
+cd log
+cd samba</code></pre>
+<h1>[2025-04-30] Day 5: File Navigation and File / Directory properties.</h1>
+<p>Day 5 is about interacting and moving around using the CLI.</p>
+<p>Starting off with probably the most used and most important command:</p>
+<ul><li>cd. It stands for change directory, this allows us to move around our folders and get to where and what we need.</li></ul>
+<ul><li>cd .. is used to go up a level .. goes to the parent of the directory we are currently in.</li></ul>
+<p>The next command is:</p>
+<ul><li>pwd. This stands for print working directory. This tells us where we currently are.</li></ul>
+<p>A very useful command is:</p>
+<ul><li>cat. This stands for concatenate and it displays a file and it's contents.</li></ul>
+<p>The last and my personal favourite is:</p>
+<ul><li>ls. This stands for list and it displays all files and folders in the current directory, excluding hidden files. ls -l is used for better formatting.</li></ul>
+<p>ls -l gives us something in the same format as the following:</p>
+<pre><code>| Type         | # of Links | Owner | Group  | Size | Month  | Day | Time   | Name     |
+|--------------|------------|-------|--------|------|--------|-----|--------|----------|
+| drwxr-xr-x.  | 21         | root  | root   | 4096 | Feb    | 27  | 13:33  | var      |
+| lrwxrwxrwx.  | 1          | root  | root   | 7    | Feb    | 27  | 13:15  | bin      | 
+| -rw-r--r--   | 1          | root  | root   | 0    | Mar    | 2   | 11:15  | testfile | </code></pre>
+<p>d at the start of the type tells up that this is a directory.<br>l tells us that this is a link to another file.</p>
+<ul><li>at the start tells us that this is just a regular file.</li></ul>
+<p>The number of links that something has. For a directory it is the number of subdirectories it has including it's parent and itself.</p>
+<p>Additional symbols and their meanings are below:</p>
+<pre><code>| File Symbol | Meaning                     | Examples                     
+|-------------|-----------------------------|---------------------------------------------------------------------|
+| -           | Regular file                | Text files, exes, images, videos                                    |
+| d           | Directory                   | Folders                                                             |
+| l           | Link                        | Points to other files, soft links, hard links.                      |
+| c           | Special file or device file | Hardware devices such as cpu, mouse, keyboard.                      |
+| s           | Socket                      | Network communication, allows data exchange.                        |
+| p           | Named pipe                  | FIFO first in first out, allows data communication.                 |
+| b           | Block device                | Hard drives and USBs, storage devices.                              |</code></pre>
+<p>Knowlege check:</p>
+<ul><li>The File that starts with c?</li></ul>
+<ul><li>What is the purpose of that file?</li></ul>
+<ul><li>Identification letter of device file?</li></ul>
+<h1>[2025-04-28] Day 4: Remote access and File systems.</h1>
+<p>Day 4 begins with a brief recap of a some important things to remember about linux.</p>
+<ul><li>ROOT is a super-user that has unrestricted access and ability to manipulate files.</li></ul>
+<ul><li>Linux is case sensitive, a1 and A1 are not the same.</li></ul>
+<ul><li>Linux is mostly used through the CLI</li></ul>
+<h2>DAY 4 proper:</h2>
+<p>There are TWO types of access to a linux machine:</p>
+<ul><li>Local: Console. In person, hands on keyboard.</li><li>Non-local: Remote. Can be done without being in person, over the network, usually over SSH.</li></ul>
+<p>Remote connection is done with SSH ipaddress in a CLI as follows:</p>
+<pre><code>ssh -l USER xxx.xxx.x.x</code></pre>
+<p>To get the ip address of the machine we want to connect to, we can use this command locally:</p>
+<pre><code>ip addr</code></pre>
+<p>Once we are successfully connected we can tell if we are logged in a user or root depending on the username and prompt symbol after the hostname. The default command symbol for root is: # and for users it is: $.</p>
+<ul><li>whoami can also be used to display who you are logged in as.</li></ul>
+<ul><li>rootname can be used to display the name of the host too.</li></ul>
+<ul><li>CTRL + C is used to escape out of any commands we might be "trapped" in such as cat.</li></ul>
+<p>Next is filesystems. Filesystems are systems used by operating systems to determine how files are stored.</p>
+<p>The primary files systems used by linux are:</p>
+<ul><li>[ext3](https://en.wikipedia.org/wiki/Ext3)</li></ul>
+<ul><li>[ext4](https://en.wikipedia.org/wiki/Ext4)</li></ul>
+<ul><li>[xfs](https://en.wikipedia.org/wiki/XFS)</li></ul>
+<p>The file system structure used is:</p>
+<ul><li>/boot which contains the config for the bootloader, the commonly used one is [GRUB.](https://en.wikipedia.org/wiki/GNU_GRUB)</li></ul>
+<ul><li>/root this is the root user home directory.</li></ul>
+<ul><li>/dev which is the folder for system devices (disk, keyboard, mouse, etc).</li></ul>
+<ul><li>/etc is configuration files for applications.</li></ul>
+<ul><li>/usr/bin is everyday user commands.</li></ul>
+<ul><li>/usr/sbin is system and filesystem specific commands.</li></ul>
+<ul><li>/opt is optional applications that are not part of the OS.</li></ul>
+<ul><li>/proc is running processes but only exists in memory.</li></ul>
+<ul><li>/usr/lib is C library files.</li></ul>
+<ul><li>/tmp is for temporary files.</li></ul>
+<ul><li>/home is the user directory, all non-root is in here.</li></ul>
+<ul><li>/var is the system logs, useful for debugging.</li></ul>
+<ul><li>/mnt is to mount external file systems such as NFS.</li></ul>
+<ul><li>/media is for cdrom mounting.</li></ul>
+<h1>[2025-04-27] Day 3: Snapshots, resource allocation, keys.</h1>
+<p>Day 3 begins with creating a snapshot of the CentOS installation on the OracleVB machine. This was done incase I make a mistake down the line, as it allows me to return a clean working point without having to reinstall the entire OS.</p>
+<p>Resource allocation on OracleVB is done by clicking the VM instance of choice, clicking settings and then changing the desired resource. The most common examples of this would be Memory (RAM) or CPUs. Other things can be changed here such as network devices, encryption and USB device functionality.</p>
+<p>The next thing I went over was common keyboard keys actually used in Linux:</p>
+<h2>KEYS:</h2>
+<ul><li>ESC being the inital and most self-explanatory, is used to get out of states. A prime example being when you are in "INSERT" mode in VIM and return or ESCAPE back into command mode.</li></ul>
+<ul><li>Tilde ~ is another massively useful key as it allows us to save time and effort while navigating to home:</li></ul>
+<pre><code>cd ~</code></pre>
+<ul><li>Hash # is immensely useful as it allows us to add comments to our code in linux which allows us to keep notes and ideas and more importantly, allows us to let other people who may have to view our code to have a better understanding of what it does/ intends to do. This is especially useful in a team setting.</li></ul>
+<ul><li>Tab is used to indent lines of code and it is also used to autocomplete when using the CLI, this can be used for autofilling commands, filenames, etc.</li></ul>
+<ul><li>{ open and } closed curly braces.</li></ul>
+<ul><li>[ open and ] closed square brackets.</li></ul>
+<ul><li>: colon. Used primarily in VIM to preceed a command such as:</li></ul>
+<pre><code>:wq # wq is used to save(write) and close(quit) the open file.</code></pre>
+<ul><li>| is the pipe key, ctrl + alt + shift \ on this current keyboard. This is used to combine commands together or PIPE the output from one command to the next.</li></ul>
+<ul><li>< input > output. < is the output from. >> is appending, > is overwriting.</li></ul>
+<ul><li>Right CTRL. This is used to break out mouse and or keyboard control out of OracleVB and the running VM.</li></ul>
+<p>Day 3 ends with the creation of a new VM in OracleVB and a fresh installation of CentOS to keep the process fresh in my mind through repetition.</p>
+<h1>[2025-04-26] Day 2: Intro to CentOS, RHEL, OracleVB, and AWS.</h1>
+<p>Day 1 was spent learning the history and the reasons behind Linux. Linux is open-source, free to use, highly customizable, and adaptable to specific purposes. I felt this didn't need its own entry but included it here as a reminder.</p>
+<p>Day 2 was spent installing CentOS on a machine using Oracle VirtualBox Manager. I set the processing power to 2048MB and the storage size to 20GB. CentOS was installed and runs successfully:</p>
+<p>[Imgur Link Here (Image embedding isn't available at the current time)](https://imgur.com/a/day-2-centos-running-7RwAmoZ)</p>
+<p>The next step after the successful hardware installation was using Amazon Web Services (AWS) to install a Linux VM and connect.</p>
+<p>This took a couple of attempts before succeeding. I signed up to [WhizLabs](https://www.whizlabs.com/) to take advantage of their AWS sandbox, reducing concerns about potential costly mistakes.</p>
+<p>With the EC2 instance live and the Key Pair set, I used WSL and Ubuntu on my machine to SSH into the AWS machine. This required editing my `.ssh` config on Ubuntu and adding the new cloud machine as a host:</p>
+<pre><code>Host aws
+  HostName xxx.xx.xx.xxx
+  IdentityFile ~/.ssh/xxxx.pem
+  User ec2-user</code></pre>
+<p>The `.pem` file's permissions needed to be changed to be used with the command: `ssh-keygen -lf xxxx.pem`.</p>
+<p>I used `chmod 0600 xxxx.pem` to change the permissions, making the key file only viewable by root.</p>
+<p>This allowed me to use `ssh-keygen -lf xxxx.pem` to verify the file's validity.</p>
+<p>After completing these steps, I connected using `ssh aws`, which was successful:</p>
+<p>[Imgur Link Here](https://imgur.com/a/TqAJVu6)</p>
+<p>---</p>
+<h1>[2025-04-25] Goals, Intentions, and Motivations.</h1>
+<p>*<em>Goals:</em>*</p>
+<p>Update this blog to track my learning progress.</p>
+<p>Learn about modern computing and how operating systems, installed both on hardware and in cloud environments, are used in business settings.</p>
+<p>Manually install and run VMs on both platforms and automate the installation and setup.</p>
+<p>Gain an understanding of Linux and its roles and applications in modern business.</p>
+<p>*<em>Intentions / Motivations:</em>*</p>
+<p>I have always had an interest in the technology used in modern business, especially how computing operates on a larger scale in the real world.</p>
+<p>I've discovered resources that make the learning experience more streamlined and engaging.</p>
+<p>The idea of working in a field that is entirely remote, as is often the case in cloud computing, system administration, and DevOps, aligns with my career aspirations.</p>
+<p>A certain duck who brings immense light into my days.</p>
+<p>As thanks to *<em>R</em>* for an unlimited amount of patience.</p>
+<h1>secret</h1>
+<p><img alt="Avatar" src="https://github.com/BasOwl/blog/blob/main/oh%20hi.jpg?raw=true"></p>
+<h1>python - autofile</h1>
+<p>The goal is to create a program that:</p>
+<ul><li>Takes a given list of names.</li><li>Creates either Directories or Files with each of the listed names.</li><li>Has good readability and can be understood by a 3rd party in order to increase my ability to work with a team.</li><li>Has good documentation for the same reason as above.</li></ul>
+<p>This is to speed up the process of file and directory creation and to replace the need to type out each name in a touch or mkdir command.</p>
+<p>The reason(s) I chose to use python are:</p>
+<ul><li>It is the language I am most familiar with.</li><li>To increase my familiarity and renew my knowlege of python and file handling.</li><li>To attempt to find a way to distribute Python projects in an easier and cleaner way.</li></ul>
+<p>I am intending to use vim to further familisarise myself with coding on a CLI which is in line with the rest of the blog.</p>
+<h2>auto_file.py</h2>
+<p>[Link to the github is here. <--](https://github.com/BasOwl/auto_file)</p>
+<pre><code># The goal of this program is to:
+# - Open a file.
+# - Read and import the file, line by line.
+# - Create a file per name or a directory per name.
+
+import os
+
+def import_file() -&gt; list[str]:
+    """Open a given file and return a list of the contents with blank lines removed"""
+    imported_list = []
+
+    with open("names.txt", "r") as file: # can change this to be a variable given to the function to define other files.
+        for line in file:
+            if line.strip() != "": # checks for blank entries and excludes them.
+                imported_list.append(line.strip())
+    
+    return imported_list
+
+
+def create_parent_dir() -&gt; None:
+    """Creates a parent directory, can also be used to create multiple"""
+    PATH = "names" # this can be changed to make the function take an argument to create multiple dirs if needed. 
+
+    if not os.path.exists(PATH): # if the given dir name doesn't exist the next line creates it.
+        os.makedirs(PATH)
+
+
+def create_dir(import_file :list[str], parent_dir :str) -&gt; None:
+    """creates a directory for each line of import_file in the directory given in parent_dir"""
+    for line in import_file:
+
+        if not os.path.exists(line):
+            os.makedirs("names/" + line, exist_ok=True)
+
+
+def create_file(import_file :list[str]) -&gt; None:
+    """Creates a file with the name on each line of the given list, does not return anything"""
+    for line in import_file: # repeats for each name in imported_list
+
+        file_path = os.path.join("names", line) # this returns a file path using the correct seperator. 
+        open(file_path, "x") # this creates a file in the folder above.
+
+
+def user_choice(parent_dir :str) -&gt; None:
+    """gets user input to determine the creation of directories or files."""
+    choice = input("1 for Directories only, 2 for files only: ").strip().lower()
+
+    if choice == "1":
+        create_dir(import_file() , parent_dir)        
+
+    elif choice == "2":
+        create_file(import_file())
+    
+    else:
+        print("choice is invalid. 1 or 2 are valid choices.")
+
+
+
+def main() -&gt; None:
+    print("Main is now running:")
+
+    create_parent_dir()
+    user_choice("names")
+    
+
+    print("Main has finished running.")
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+<h1>shell-scripting-intro</h1>
+<p>SHELL SCRIPTING WOO</p>
+<p>The main goal is to familiarise myself with what I can do with shell scripting and to create something somewhat useful.</p>
+<p>The intial thing I came up with is a script to reduce the number lines I have to type when I want to use pwd, whoami and hostname:</p>
+<pre><code>#!/usr/bin/env bash
+
+echo "I am: $(whoami)"
+echo "I am at: $(pwd)"
+echo "I am on: $(hostname)"
+</code></pre>
+<p>This prints all three commands.</p>
+<p>I then moved this into /.local/bin and renamed it to "wwh" so that whereever I am on the user I can type "wwh" and it will run.</p>
+<p>Another very simple script I made to test out variables was:</p>
+<pre><code>#!/usr/bin/env bash
+
+echo "Hello $1"</code></pre>
+<p>If we then run this with:</p>
+<pre><code>./variable_test.sh OWL</code></pre>
+<p>We get the output: "Hello OWL"</p>
+<h1>virtual-env-check-script</h1>
+<p>So this is an attempt to automate/ play around with shell scripting and the python packaging stuff found in [Day 39](https://lmno.lol/basowl/day-39-python-packaging-venvs-and-required-package-sharing)</p>
+<p>A basic way for us to use bash to check if we are in a virtual env or not:</p>
+<pre><code>#!env/usr/bin/env bash
+
+if [[-n $VIRTUAL_ENV_PROMPT]]; then
+  echo "inside venv"
+
+else
+  echo "not inside env"
+
+fi
+  ```
+
+A way we can use python to check if we are in a venv is to compare sys.prefix and sys.base_prefix. If they are equal then we are NOT in a venv:
+
+def venvcheck():
+  return sys.prefix != sys.base_prefix
+
+# markdown-to-html-converter
+
+I decided to do this in python so save time and to keep it as simple as possible.
+
+The things I need to program to do are:
+
+- Open a file
+
+- Establish what needs converting to what
+
+- Attempt to convert to html
+
+I've been advised that it may be beneficial to first look into a "Recursive Decent Parser"
+
+"A recursive descent parser is a top-down parser that processes input based on a set of recursive functions, where each function corresponds to a grammar rule." - https://www.geeksforgeeks.org/compiler-design/recursive-descent-parser/
+
+I am also in need of a Dictionary: https://www.w3schools.com/python/python_dictionaries.asp
+
+
+
+# current-project
+
+A Markov Chain is "stochastic" (having a random probability distribution or pattern that may be analysed statistically but may not be predicted precisely)
+Stochastic being a word than is still not within my complete grasp but I think I will get the hang of it as I take a crack at making at the Markov Chain Generator
+
+A Markov Chain is a "process that transitions between states such that the probability of moving to the next state depends solely on the current state"
+
+In the simplest form I understand it is: A process where the future depends ONLY on the PRESENT and there are probabilites of the move that will happen NEXT.
+
+The goal is to begin the project, first using C to try and familiarise myself with the grandfather of coding languages.
+
+Firstly, we need a C compiler on the Linux machine. We're on CentOS 9 so we use: </code></pre>
+<p>dnf install gcc</p>
+<pre><code>[gcc](https://en.wikipedia.org/wiki/GNU_Compiler_Collection) is a COLLECTION of compilers from the GNU Project.
+This being MASSIVELY useful for a whole number of programming languages but it initially started as a C compiler.
+</code></pre>
+<p>#include <stdio></p>
+<p>int main(){</p>
+<p>  printf("C go brr \n");</p>
+<p>  return 0;<br>}</p>
+<pre><code>
+So to test if our compiler is working we have to actually call gcc and give our filename, and what we want the output exe to be called:
+</code></pre>
+<p>gcc FILENAME -o OUTPUTNAME</p>
+<pre><code>
+Now we have checked that we can actually run anything we write
+
+In an effort to save some sanity before diving further into C, I decided to create a rough draft of the project in Python:</code></pre>
+<p>import random</p>
+<p>def open_file(filename: str) -> list:<br>    with open(filename) as file:<br>        contents = file.read() #contents now gives us access to the file<br>        #print(contents)<br>        file.close()</p>
+<p>    return contents</p>
+<p>def create_list(filename: str) -> list:<br>    res = list()</p>
+<p>    res.append(open_file(filename).splitlines())</p>
+<p>    return res</p>
+<p>def gen_length() -> int:<br>    res = input("How many words?: ")</p>
+<p>    return int(res)</p>
+<p>def gen_sentence(filename) -> str:</p>
+<p>    res = list()<br>    names = create_list(filename) # list ((entry1, entry2)) list inside of a list with 1 index of 0<br>    index = names[0][-1] #look into flatten<br>    last_index = names[0].index(index)</p>
+<p>    for _ in range(gen_length()):</p>
+<p>        rand_index = random.randrange(0, last_index -1)<br>        res.append(names[0][rand_index])</p>
+<p>    return res</p>
+<p>def run():<br>    print("run: \n")</p>
+<p>    print(gen_sentence("test.txt"))</p>
+<p>def main():<br>    print("Begin main: ")</p>
+<p>    run()</p>
+<p>if __name__ == '__main__':<br>    main()</p>
+<pre><code>
+## Project Start
+
+So to start off, the idea is to try and split the project into the components I would need.
+
+- First, I need a way to import a text file into the project. This is to be able to feed samples into the program:
+  ```
+  char *open_text_file(const char *filename)
+  ```
+
+const char * const means “the function promises not to modify the string data”. char * points to the first character of a string and reads until it hits a "\0"
+"\0" is a special character that is called the NULL character or NULL terminator
+
+                                               
+# blog-about
+
+I'm [@basowl](/basowl).🦉 Within is a journey of learning, frustration and eventual success.&lt;br&gt; 
+
+Contact me by mail: [mail@basowl.com](mailto:mail@basowl.com)
+
+Check out my Github at: https://github.com/BasOwl
+
+My latest project is [here](/basowl/Current-Project)</code></pre>
+
+</div>
 
 </body>
 
 </html>
-
